@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.2" last-position="0,0" last-zoom="1" max-obj-count="12"
+	 default-owner="postgres">
+<database name="novel_website" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<schema name="website_db" layer="0" rect-visible="true" fill-color="#82d4c8">
+	<role name="postgres"/>
+</schema>
+
+<table name="novel" layer="0" collapse-mode="2" max-obj-count="7">
+	<schema name="website_db"/>
+	<role name="postgres"/>
+	<position x="780" y="240"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="200"/>
+	</column>
+	<column name="description">
+		<type name="text" length="0"/>
+	</column>
+	<column name="rating" not-null="true" default-value="0">
+		<type name="real" length="0"/>
+	</column>
+	<column name="votes" not-null="true" default-value="0">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="novel_pk" type="pk-constr" table="website_db.novel">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="genre" layer="0" collapse-mode="2" max-obj-count="2">
+	<schema name="website_db"/>
+	<role name="postgres"/>
+	<position x="1340" y="360"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="genre" not-null="true">
+		<type name="varchar" length="60"/>
+	</column>
+	<constraint name="genre_pk" type="pk-constr" table="website_db.genre">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="genre_uq" type="uq-constr" table="website_db.genre">
+		<columns names="genre" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="genre_aux" layer="0" collapse-mode="2" max-obj-count="3">
+	<schema name="website_db"/>
+	<role name="postgres"/>
+	<position x="1220" y="80"/>
+
+	<customidxs object-type="column">
+		<object name="id_genre" index="0"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="genre_aux_pk" index="0"/>
+		<object name="genre_fk" index="1"/>
+	</customidxs>
+</table>
+
+<table name="chapter" layer="0" collapse-mode="2" max-obj-count="4">
+	<schema name="website_db"/>
+	<role name="postgres"/>
+	<position x="1220" y="720"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="order_num" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="text" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="chapter_pk" type="pk-constr" table="website_db.chapter">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="chapter_order_num_ck" type="ck-constr" table="website_db.chapter">
+			<expression><![CDATA[order_num > 0]]></expression>
+	</constraint>
+</table>
+
+<table name="comment" layer="0" collapse-mode="2" max-obj-count="4">
+	<schema name="website_db"/>
+	<role name="postgres"/>
+	<position x="240" y="720"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="text" not-null="true">
+		<type name="varchar" length="1000"/>
+	</column>
+	<constraint name="comment_pk" type="pk-constr" table="website_db.comment">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="review" layer="0" collapse-mode="2" max-obj-count="6">
+	<schema name="website_db"/>
+	<role name="postgres"/>
+	<position x="680" y="540"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="rating" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="text">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="review_pk" type="pk-constr" table="website_db.review">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="review_rating_ck" type="ck-constr" table="website_db.review">
+			<expression><![CDATA[rating > 0 AND rating <= 5]]></expression>
+	</constraint>
+</table>
+
+<relationship name="genre_has_many_genre_aux" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#c2382f"
+	 src-table="website_db.genre"
+	 dst-table="website_db.genre_aux"
+	 src-required="true" dst-required="false"
+	 identifier="true"
+
+	del-action="CASCADE">
+	<label ref-type="name-label">
+		<position x="1.27082" y="-27.9357"/>
+	</label>
+</relationship>
+
+<relationship name="novel_has_many_genre_aux" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#2a3f7e"
+	 src-table="website_db.novel"
+	 dst-table="website_db.genre_aux"
+	 src-required="true" dst-required="false"
+	 identifier="true"
+
+	del-action="CASCADE">
+	<label ref-type="name-label">
+		<position x="12.7072" y="-19.0744"/>
+	</label>
+</relationship>
+
+<relationship name="chapter_has_many_comments" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#2eb529"
+	 src-table="website_db.chapter"
+	 dst-table="website_db.comment"
+	 src-required="true" dst-required="false"
+	del-action="CASCADE">
+	<label ref-type="name-label">
+		<position x="18.5547" y="-21.6689"/>
+	</label>
+</relationship>
+
+<relationship name="novel_has_many_chapter" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#934bc5"
+	 src-table="website_db.novel"
+	 dst-table="website_db.chapter"
+	 src-required="true" dst-required="false"
+	del-action="CASCADE"/>
+
+<relationship name="novel_has_many_reviews" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#ba921c"
+	 src-table="website_db.novel"
+	 dst-table="website_db.review"
+	 src-required="true" dst-required="false"
+	del-action="CASCADE">
+	<label ref-type="name-label">
+		<position x="6.66856" y="-24.8357"/>
+	</label>
+</relationship>
+
+<constraint name="chapter_id_novel_order_num_uq" type="uq-constr" table="website_db.chapter">
+	<columns names="id_novel,order_num" ref-type="src-columns"/>
+</constraint>
+
+<table name="favourite" layer="0" collapse-mode="2" max-obj-count="3">
+	<schema name="website_db"/>
+	<role name="postgres"/>
+	<position x="340" y="80"/>
+	<column name="hide" not-null="true" default-value="FALSE">
+		<type name="bool" length="0"/>
+	</column>
+
+	<customidxs object-type="column">
+		<object name="id_novel" index="0"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="favourite_pk" index="0"/>
+		<object name="novel_fk" index="1"/>
+	</customidxs>
+</table>
+
+<relationship name="novels_is_in_many_favourites" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#5e2a05"
+	 src-table="website_db.novel"
+	 dst-table="website_db.favourite"
+	 src-required="true" dst-required="false"
+	 identifier="true"
+/>
+
+<usertype name="rights" configuration="enumeration">
+	<schema name="website_db"/>
+	<role name="postgres"/>
+	<enumeration values="admin_,user_"/>
+</usertype>
+
+<table name="user" layer="0" collapse-mode="2" max-obj-count="7">
+	<schema name="website_db"/>
+	<role name="postgres"/>
+	<position x="80" y="340"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="rights" not-null="true" default-value="'user_'">
+		<type name="website_db.rights" length="0"/>
+	</column>
+	<column name="nickname" not-null="true">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="password" not-null="true">
+		<type name="varchar" length="1000"/>
+	</column>
+	<column name="reg_date" not-null="true">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="e_mail">
+		<type name="varchar" length="40"/>
+	</column>
+	<constraint name="user_pk" type="pk-constr" table="website_db.&quot;user&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="user_nickname_uq" type="uq-constr" table="website_db.&quot;user&quot;">
+		<columns names="nickname" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="user_e_mail_uq" type="uq-constr" table="website_db.&quot;user&quot;">
+		<columns names="e_mail" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="user_wrote_many_reviews" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#44583b"
+	 src-table="website_db.&quot;user&quot;"
+	 dst-table="website_db.review"
+	 src-required="true" dst-required="false"
+	del-action="SET NULL">
+	<label ref-type="name-label">
+		<position x="19.4962" y="-31.316"/>
+	</label>
+</relationship>
+
+<relationship name="user_owns_many_novels" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#8d0d30"
+	 src-table="website_db.&quot;user&quot;"
+	 dst-table="website_db.novel"
+	 src-required="true" dst-required="false"
+	del-action="CASCADE">
+	<label ref-type="name-label">
+		<position x="-13.0038" y="-17.1833"/>
+	</label>
+</relationship>
+
+<constraint name="review_uq" type="uq-constr" table="website_db.review">
+	<columns names="id_novel,id_user" ref-type="src-columns"/>
+</constraint>
+
+<relationship name="users_has_many_favourites" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#d90cc2"
+	 src-table="website_db.&quot;user&quot;"
+	 dst-table="website_db.favourite"
+	 src-required="true" dst-required="false"
+	 identifier="true"
+/>
+
+<relationship name="user_wrote_many_comments" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#e37514"
+	 src-table="website_db.&quot;user&quot;"
+	 dst-table="website_db.comment"
+	 src-required="true" dst-required="false"
+	del-action="SET NULL">
+	<label ref-type="name-label">
+		<position x="13.0756" y="-34.8357"/>
+	</label>
+</relationship>
+
+</dbmodel>

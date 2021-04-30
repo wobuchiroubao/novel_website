@@ -1,0 +1,3 @@
+graft ./website/templates
+graft ./website/static
+include ./website/schema.sql
