@@ -14,11 +14,8 @@ DBNAME='postgres'
 USER='postgres'
 PASSWORD='my_password'
 ```
-within the project directory website/ run:
+within the project directory run:
 ```
-$ pip install --editable .
-$ export FLASK_APP=website
-$ export FLASK_DEBUG=true
-$ flask initdb
-$ flask run
+$ export CONFIG='/path/to/config/file'
+$ ./app.py
 ```
