@@ -4,6 +4,9 @@
 
 from setuptools import setup
 
+with open('README.md', mode='r', encoding='utf-8') as f:
+    long_description = f.read()
+
 setup(
     # name='sampleproject'
     # sampleproject--name of project? under which it'll be registered on PyPI
@@ -22,6 +25,9 @@ setup(
     # corresponds to the "Summary" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#summary
     description='Website for your lovely novels~',  # Optional
+
+    # Get the long description from the README file
+    long_description=long_description,  # Optional
 
     # this is an optional longer description of your project that represents
     # the body of text which users will see when they visit PyPI.

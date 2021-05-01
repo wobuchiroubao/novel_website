@@ -1,4 +1,14 @@
-CREATE SCHEMA website_db;
+CREATE SCHEMA IF NOT EXISTS website_db;
+
+DROP TABLE IF EXISTS website_db.genre_aux;
+DROP TABLE IF EXISTS website_db.genre;
+DROP TABLE IF EXISTS website_db.favourite;
+DROP TABLE IF EXISTS website_db.review;
+DROP TABLE IF EXISTS website_db.comment;
+DROP TABLE IF EXISTS website_db.chapter;
+DROP TABLE IF EXISTS website_db.novel;
+DROP TABLE IF EXISTS website_db.user;
+DROP TYPE IF EXISTS website_db.rights;
 
 CREATE TYPE website_db.rights AS
 ENUM ('admin_','user_');

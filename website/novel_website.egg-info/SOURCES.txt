@@ -2,6 +2,10 @@ MANIFEST.in
 README.md
 setup.py
 ./website/schema.sql
+./website/static/style.css
+./website/templates/layout.html
+./website/templates/login.html
+./website/templates/show_entries.html
 novel_website.egg-info/PKG-INFO
 novel_website.egg-info/SOURCES.txt
 novel_website.egg-info/dependency_links.txt
@@ -9,4 +13,4 @@ novel_website.egg-info/requires.txt
 novel_website.egg-info/top_level.txt
 website/__init__.py
 website/backend.py
-website/default_config.py
+website/config.py
