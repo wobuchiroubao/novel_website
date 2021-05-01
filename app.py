@@ -32,18 +32,18 @@ def main_page():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
+        if request.form['password'] != request.form['password_rep']:
+            abort(400)
         dbc = get_dbc()
         cur = dbc.cursor()
-        if request.form['password'] == request.form['password_rep']:
-            cur.execute(
-                'INSERT INTO website_db.user (nickname, password, e_mail) VALUES (%s, %s, %s)',
-                [request.form['nickname'], request.form['password'],
-                request.form['e_mail'] or 'NULL']
-                )
-            dbc.commit()
-            return redirect(url_for('main_page'))
-        else:
-            pass
+        cur.execute(
+            'INSERT INTO "user" (nickname, password, e_mail) VALUES (%s, %s, %s)',
+            [request.form['nickname'], request.form['password'],
+            request.form['e_mail']]
+        )
+        dbc.commit()
+        return redirect(url_for('login'))
+
     return render_template('register.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -55,7 +55,7 @@ def search():
     dbc = get_dbc()
     cur = dbc.cursor()
     cur.execute(
-        'SELECT name, description, rating FROM website_db.novel WHERE name = %s ORDER BY rating DESC',
+        'SELECT name, description, rating FROM "novel" WHERE name = %s ORDER BY rating DESC',
         [request.form['novel_name']])
     data = cur.fetchall()
     return render_template('novels_list.html', data=data)
