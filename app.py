@@ -14,7 +14,7 @@ def connect_db():
     return dbc.connect(
         dbname=app.config['DBNAME'], user=app.config['USER'],
         password=app.config['PASSWORD'], host=app.config['HOST'],
-        #cursor_factory=DictCursor
+        cursor_factory=DictCursor
     )
 
 def get_dbc():
@@ -27,7 +27,7 @@ def get_dbc():
 
 @app.route('/')
 def main_page():
-    return render_template('main_page.html')
+    return render_template('main_page.html', logged_in=('logged_in' in session))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -43,12 +43,30 @@ def register():
         )
         dbc.commit()
         return redirect(url_for('login'))
-
     return render_template('register.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        dbc = get_dbc()
+        cur = dbc.cursor()
+        cur.execute(
+            'SELECT password FROM "user" WHERE nickname = %s',
+            [request.form['login'],]
+        )
+        rec = cur.fetchone()
+        if rec is None:
+            abort(400)
+        if rec['password'] != request.form['password']:
+            abort(400)
+        session['logged_in'] = True
+        return redirect(url_for('main_page'))
     return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return redirect(url_for('main_page'))
 
 @app.route('/search')
 def search():

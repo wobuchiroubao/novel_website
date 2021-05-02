@@ -16,7 +16,11 @@ Create a configuration file `novel_website_config.py` (or choose any other appro
 DBNAME='dbname'
 USER='rolename'
 PASSWORD='passwd'
+HOST='localhost'
+SECRET_KEY='very secret key'
 ```
+where `SECRET_KEY` stands for the key for client session security.
+
 Change the current directory to the target one (the one where you're storing application files), set the environment variable `CONFIG` to the path to your configuration and then load the database configuration `schema.sql`:
 ```
 $ export CONFIG='/path/to/config/file'
