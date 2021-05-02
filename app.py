@@ -27,7 +27,7 @@ def get_dbc():
 
 @app.route('/')
 def main_page():
-    return render_template('main_page.html', logged_in=('logged_in' in session))
+    return render_template('main_page.html', logged_in=('user_id' in session))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -51,22 +51,42 @@ def login():
         dbc = get_dbc()
         cur = dbc.cursor()
         cur.execute(
-            'SELECT password FROM "user" WHERE nickname = %s',
-            [request.form['login'],]
+            'SELECT * FROM "user" WHERE nickname = %s',
+            [request.form['login']]
         )
         rec = cur.fetchone()
         if rec is None:
             abort(400)
         if rec['password'] != request.form['password']:
             abort(400)
-        session['logged_in'] = True
+        session['user_id'] = rec['id']
         return redirect(url_for('main_page'))
     return render_template('login.html')
 
 @app.route('/logout')
 def logout():
-    session.pop('logged_in', None)
+    session.pop('user_id', None)
     return redirect(url_for('main_page'))
+
+@app.route('/account_settings', methods=['GET', 'POST'])
+def account_settings():
+    dbc = get_dbc()
+    cur = dbc.cursor()
+    if request.method == 'POST':
+        pass
+    cur.execute(
+        'SELECT nickname FROM "user" WHERE id = %s', [session['user_id']]
+        )
+    nickname, = cur.fetchone()
+    cur.execute(
+        'SELECT name, description FROM "novel" WHERE id_user = %s ORDER BY name',
+        [session['user_id']])
+    data = cur.fetchall()
+    return render_template('account_settings.html', nickname=nickname, data=data)
+
+@app.route('/post_novel', methods=['GET', 'POST'])
+def post_novel():
+    return render_template('post_novel.html')
 
 @app.route('/search')
 def search():
