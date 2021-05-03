@@ -25,9 +25,28 @@ def get_dbc():
         g.dbc = connect_db()
     return g.dbc
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def main_page():
     return render_template('main_page.html', logged_in=('user_id' in session))
+
+@app.route('/novels_list', methods=['POST'])
+def novels_list():
+    dbc = get_dbc()
+    cur = dbc.cursor()
+    cur.execute(
+        'SELECT id FROM "novel" WHERE name LIKE \'%%\' || %s || \'%%\' ORDER BY rating DESC, name',
+        [request.form['novel_name']]
+    )
+    recs = cur.fetchall()
+    novel_ids = []
+    data = []
+    for rec in recs:
+        cur.execute(
+            'SELECT name, description, rating FROM "novel" WHERE id = %s ORDER BY rating DESC, name',
+            [rec['id']]
+        )
+        data.append(cur.fetchone())
+    return render_template('novels_list.html', data=data)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -73,10 +92,23 @@ def account_settings():
     dbc = get_dbc()
     cur = dbc.cursor()
     if request.method == 'POST':
-        pass
+        set_var = None
+        if 'new_login' in request.form:
+            set_var = 'nickname'
+        elif 'new_password' in request.form:
+            set_var = 'password'
+        elif 'new_e_mail' in request.form:
+            set_var = 'e_mail'
+        else:
+            abort(400)
+        cur.execute(
+            'UPDATE "user" SET ' + set_var + ' = %s WHERE id = %s',
+            [request.form['new_login'], session['user_id']]
+        )
+        dbc.commit()
     cur.execute(
         'SELECT nickname FROM "user" WHERE id = %s', [session['user_id']]
-        )
+    )
     nickname, = cur.fetchone()
     cur.execute(
         'SELECT name, description FROM "novel" WHERE id_user = %s ORDER BY name',
@@ -86,17 +118,29 @@ def account_settings():
 
 @app.route('/post_novel', methods=['GET', 'POST'])
 def post_novel():
-    return render_template('post_novel.html')
-
-@app.route('/search')
-def search():
     dbc = get_dbc()
     cur = dbc.cursor()
-    cur.execute(
-        'SELECT name, description, rating FROM "novel" WHERE name = %s ORDER BY rating DESC',
-        [request.form['novel_name']])
-    data = cur.fetchall()
-    return render_template('novels_list.html', data=data)
+    if request.method == 'POST':
+        cur.execute(
+            'INSERT INTO "novel" (name, description, id_user) VALUES (%s, %s, %s) RETURNING id',
+            [request.form['name'], request.form['description'],
+            session['user_id']]
+        )
+        novel_id, = cur.fetchone()
+        genres = request.form.getlist('genre')
+        for genre in genres:
+            cur.execute(
+                'INSERT INTO "genre_aux" (id_genre, id_novel) VALUES ((SELECT id FROM "genre" WHERE genre = %s), %s)',
+                [genre, novel_id]
+            )
+        dbc.commit()
+        return redirect(url_for('account_settings'))
+    cur.execute('SELECT (genre) FROM "genre"')
+    return render_template('post_novel.html',data=cur.fetchall())
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    return render_template('search_novel.html')
 
 # decorator app.teardown_appcontext registers a function to be called
 # when the application context ends.

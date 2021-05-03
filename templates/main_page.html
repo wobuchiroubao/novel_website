@@ -11,10 +11,11 @@
       <a href={{ url_for('register') }}>Register</a>
       <a href={{ url_for('login') }}>Login</a><br>
     {% endif %}
-    <form action={{ url_for('search') }} method="POST">
+    <form action={{ url_for('novels_list') }} method="POST">
       <label for="search">Search:</label><br>
       <input type="text" id="search" name="novel_name" placeholder="Search novel"><br>
       <input type="submit" value="Search"><br>
     </form>
+    <a href={{ url_for('search') }}>Advansed search</a>
   </body>
 </html>
