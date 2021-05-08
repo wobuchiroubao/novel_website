@@ -46,7 +46,7 @@ def novels_list():
     for rec in recs:
         cur.execute(
             'SELECT name, rating, id_user AS author, description FROM "novel" \
-            WHERE id = %s ORDER BY rating DESC, name',
+            WHERE id = %s',
             [rec['id']]
         )
         cur_gen.execute(
@@ -69,11 +69,38 @@ def find_name(cur):
 
 def find_advanced(cur):
     str, param = sql_find_novel_template()
-    #return ('WITH dummy AS (1)' + str + ' ORDER BY rating DESC, name', param)
+    str_sort = ''
+    if request.form['sort_field'] == 'rating':
+        str_sort += ' ORDER BY rating'
+    elif request.form['sort_field'] == 'chapters':
+        str_sort += ' ORDER BY chap_num'
+    if request.form['sort_order'] == 'desc':
+        str_sort += ' DESC NULLS LAST'
+    else:
+        str_sort += ' NULLS FIRST'
+    str_sort += ', name'
+    #return ('WITH dummy AS (1)' + str + str_sort, param)
     cur.execute(
-        'WITH dummy AS (SELECT 1)' + str + ' ORDER BY rating DESC, name', param
+        'WITH dummy AS (SELECT 1)' + str + str_sort, param
     )
     return cur.fetchall()
+
+def sql_find_chapters_template(func):
+    def wrapped():
+        if request.form['chapters'] and not (
+            request.form['chapters_min_max'] == 'min'
+            and request.form['chapters'] == '0'
+        ):
+            str, param = func()
+            param.append(request.form['chapters'])
+            str_add = ' AND (chap_num '
+            if request.form['chapters_min_max'] == 'min':
+                str_add += '>= %s)'
+            else:
+                str_add += '<= %s OR chap_num IS NULL)'
+            return (str + str_add, param)
+        return func()
+    return wrapped
 
 def sql_find_rating_template(func):
     def wrapped():
@@ -112,31 +139,16 @@ def sql_find_genre_template(func):
         return func()
     return wrapped
 
-def sql_find_chapters_template(func):
-    def wrapped():
-        if request.form['chapters']:
-            str, param = func()
-            str_add = ', "novel_chap" AS ( \
-                SELECT id_novel FROM "chapter" \
-                GROUP BY id_novel HAVING COUNT(*) '
-            if request.form['chapters_min_max'] == 'min':
-                str_add += '>= '
-            else:
-                str_add += '<= '
-            str_add += '%s)'
-            param.insert(0, request.form['chapters'])
-            return (
-                str_add + str + \
-                ' AND (id IN (SELECT id_novel FROM "novel_chap"))', param
-            )
-        return func()
-    return wrapped
-
-@sql_find_chapters_template
 @sql_find_genre_template
 @sql_find_rating_template
+@sql_find_chapters_template
 def sql_find_novel_template():
-    return (' SELECT id FROM "novel" WHERE TRUE', [])
+    return (
+        ', "chapters" AS ( \
+        SELECT COUNT(*) AS chap_num, id_novel FROM "chapter" GROUP BY id_novel \
+        ) SELECT id FROM "novel" \
+        LEFT JOIN "chapters" ON "novel".id = "chapters".id_novel WHERE TRUE', []
+    )
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
