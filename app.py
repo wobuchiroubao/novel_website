@@ -42,12 +42,20 @@ def novels_list():
     recs = cur.fetchall()
     novel_ids = []
     data = []
+    cur_gen = dbc.cursor()
     for rec in recs:
         cur.execute(
-            'SELECT name, description, rating FROM "novel" WHERE id = %s ORDER BY rating DESC, name',
+            'SELECT name, rating, id_user AS author, description FROM "novel" \
+            WHERE id = %s ORDER BY rating DESC, name',
             [rec['id']]
         )
-        data.append(cur.fetchone())
+        cur_gen.execute(
+            'SELECT id_genre, genre FROM "genre_aux" \
+            JOIN "genre" ON "genre_aux".id_genre = "genre".id \
+            WHERE id_novel = %s ORDER BY genre',
+            [rec['id']]
+        )
+        data.append((cur.fetchone(), cur_gen.fetchall()))
     return render_template('novels_list.html', data=data)
 
 @app.route('/register', methods=['GET', 'POST'])

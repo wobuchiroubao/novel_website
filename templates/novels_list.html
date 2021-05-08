@@ -6,17 +6,30 @@
       <thead>
         <tr>
           <th>Name</th>
+          <th>Rating</th>
+          <th>Author</th>
           <th>Genres</th>
           <th>Description</th>
-          <th>Rating</th>
         </tr>
       </thead>
       <tbody>
         {% for row in data %}
         <tr>
-          {% for cell in row %}
-          <td>{{ cell }}</td>
-          {% endfor %}
+          <td>{{ row[0]['name'] }}</td>
+          <td>{{ row[0]['rating'] }}</td>
+          <td>{{ row[0]['author'] }}</td>
+          <td>
+            <table>
+              <thead>
+              </thead>
+              <tbody>
+                {% for genre in row[1] %}
+                  <tr><td>{{ genre['genre'] }}</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </td>
+          <td>{{ row[0]['description'] }}</td>
         </tr>
         {% endfor %}
       </tbody>
