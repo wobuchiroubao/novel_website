@@ -61,14 +61,14 @@ def novels_list():
 def find_name(cur):
     cur.execute(
         'SELECT id FROM "novel" \
-        WHERE name LIKE \'%%\' || %s || \'%%\' \
+        WHERE LOWER(name) LIKE \'%%\' || TRIM(both ' ' FROM LOWER(%s)) || \'%%\' \
         ORDER BY rating DESC, name',
         [request.form['novel_name']]
     )
     return cur.fetchall()
 
 def find_advanced(cur):
-    str, param = sql_find_novel_template()
+    str_, param = sql_find_novel_template()
     str_sort = ''
     if request.form['sort_field'] == 'rating':
         str_sort += ' ORDER BY rating'
@@ -79,9 +79,9 @@ def find_advanced(cur):
     else:
         str_sort += ' NULLS FIRST'
     str_sort += ', name'
-    #return ('WITH dummy AS (1)' + str + str_sort, param)
+    #return ('WITH dummy AS (1)' + str_ + str_sort, param)
     cur.execute(
-        'WITH dummy AS (SELECT 1)' + str + str_sort, param
+        'WITH dummy AS (SELECT 1)' + str_ + str_sort, param
     )
     return cur.fetchall()
 
@@ -91,21 +91,21 @@ def sql_find_chapters_template(func):
             request.form['chapters_min_max'] == 'min'
             and request.form['chapters'] == '0'
         ):
-            str, param = func()
+            str_, param = func()
             param.append(request.form['chapters'])
             str_add = ' AND (chap_num '
             if request.form['chapters_min_max'] == 'min':
                 str_add += '>= %s)'
             else:
                 str_add += '<= %s OR chap_num IS NULL)'
-            return (str + str_add, param)
+            return (str_ + str_add, param)
         return func()
     return wrapped
 
 def sql_find_rating_template(func):
     def wrapped():
         if request.form['rating']:
-            str, param = func()
+            str_, param = func()
             param.append(request.form['rating'])
             str_add = ' AND (rating '
             if request.form['rating_min_max'] == 'min':
@@ -113,27 +113,32 @@ def sql_find_rating_template(func):
             else:
                 str_add += '<= '
             str_add += '%s)'
-            return (str + str_add, param)
+            return (str_ + str_add, param)
         return func()
     return wrapped
 
 def sql_find_genre_template(func):
     def wrapped():
         if 'genre' in request.form:
-            str, param = func()
-            str_or = ' OR genre = %s' * (len(request.form.getlist('genre')) - 1)
+            str_, param = func()
+            num_gen = len(request.form.getlist('genre'))
+            str_or = ' OR genre = %s' * (num_gen - 1)
             str_add = ', "genre_id" AS ( \
                 SELECT id FROM "genre" WHERE genre = %s' + str_or + ')'
             for genre in request.form.getlist('genre'):
                 param.insert(0, genre)
             if request.form['genre_and_or'] == 'and':
-                pass
+                str_add += ', "novel_genre" AS ( \
+                    SELECT "genre_aux".id_novel FROM "genre_aux" \
+                    JOIN "genre_id" ON "genre_aux".id_genre = "genre_id".id \
+                    GROUP BY "genre_aux".id_novel \
+                    HAVING COUNT(*) = ' + str(num_gen) + ')'
             else:
                 str_add += ', "novel_genre" AS ( \
                 SELECT DISTINCT id_novel FROM "genre_aux" \
                 WHERE id_genre IN (SELECT id FROM "genre_id"))'
             return (
-                str_add + str + \
+                str_add + str_ + \
                 ' AND (id IN (SELECT id_novel FROM "novel_genre"))', param
             )
         return func()
