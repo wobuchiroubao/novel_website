@@ -9,7 +9,7 @@
       <label for="descr">Description:</label><br>
       <input type="text" id="descr" name="description"><br>
       <div>Genres:</div>
-      {% for rec in data %}
+      {% for rec in genres %}
         <label for={{ rec }}>{{ rec['genre'] }}:</label>
         <input type="checkbox" id={{ rec }} name="genre" value={{ rec['genre'] }}><br>
       {% endfor %}

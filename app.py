@@ -181,7 +181,7 @@ def post_novel():
         dbc.commit()
         return redirect(url_for('account_settings'))
     cur.execute('SELECT (genre) FROM "genre" WHERE genre_type = \'genre_\'')
-    return render_template('post_novel.html',data=cur.fetchall())
+    return render_template('post_novel.html',genres=cur.fetchall())
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
