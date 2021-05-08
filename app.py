@@ -35,12 +35,12 @@ def main_page():
 def novels_list():
     dbc = get_dbc()
     cur = dbc.cursor()
-    cur.execute(
-        'SELECT id FROM "novel" WHERE name LIKE \'%%\' || %s || \'%%\' ORDER BY rating DESC, name',
-        [request.form['novel_name']]
-    )
-    recs = cur.fetchall()
-    novel_ids = []
+    recs = None
+    if 'novel_name' in request.form:
+        recs = find_name(cur)
+    else:
+        recs = find_advanced(cur)
+        #return render_template('try.html', data=recs)
     data = []
     cur_gen = dbc.cursor()
     for rec in recs:
@@ -57,6 +57,86 @@ def novels_list():
         )
         data.append((cur.fetchone(), cur_gen.fetchall()))
     return render_template('novels_list.html', data=data)
+
+def find_name(cur):
+    cur.execute(
+        'SELECT id FROM "novel" \
+        WHERE name LIKE \'%%\' || %s || \'%%\' \
+        ORDER BY rating DESC, name',
+        [request.form['novel_name']]
+    )
+    return cur.fetchall()
+
+def find_advanced(cur):
+    str, param = sql_find_novel_template()
+    #return ('WITH dummy AS (1)' + str + ' ORDER BY rating DESC, name', param)
+    cur.execute(
+        'WITH dummy AS (SELECT 1)' + str + ' ORDER BY rating DESC, name', param
+    )
+    return cur.fetchall()
+
+def sql_find_rating_template(func):
+    def wrapped():
+        if request.form['rating']:
+            str, param = func()
+            param.append(request.form['rating'])
+            str_add = ' AND (rating '
+            if request.form['rating_min_max'] == 'min':
+                str_add += '>= '
+            else:
+                str_add += '<= '
+            str_add += '%s)'
+            return (str + str_add, param)
+        return func()
+    return wrapped
+
+def sql_find_genre_template(func):
+    def wrapped():
+        if 'genre' in request.form:
+            str, param = func()
+            str_or = ' OR genre = %s' * (len(request.form.getlist('genre')) - 1)
+            str_add = ', "genre_id" AS ( \
+                SELECT id FROM "genre" WHERE genre = %s' + str_or + ')'
+            for genre in request.form.getlist('genre'):
+                param.insert(0, genre)
+            if request.form['genre_and_or'] == 'and':
+                pass
+            else:
+                str_add += ', "novel_genre" AS ( \
+                SELECT DISTINCT id_novel FROM "genre_aux" \
+                WHERE id_genre IN (SELECT id FROM "genre_id"))'
+            return (
+                str_add + str + \
+                ' AND (id IN (SELECT id_novel FROM "novel_genre"))', param
+            )
+        return func()
+    return wrapped
+
+def sql_find_chapters_template(func):
+    def wrapped():
+        if request.form['chapters']:
+            str, param = func()
+            str_add = ', "novel_chap" AS ( \
+                SELECT id_novel FROM "chapter" \
+                GROUP BY id_novel HAVING COUNT(*) '
+            if request.form['chapters_min_max'] == 'min':
+                str_add += '>= '
+            else:
+                str_add += '<= '
+            str_add += '%s)'
+            param.insert(0, request.form['chapters'])
+            return (
+                str_add + str + \
+                ' AND (id IN (SELECT id_novel FROM "novel_chap"))', param
+            )
+        return func()
+    return wrapped
+
+@sql_find_chapters_template
+@sql_find_genre_template
+@sql_find_rating_template
+def sql_find_novel_template():
+    return (' SELECT id FROM "novel" WHERE TRUE', [])
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -180,12 +260,21 @@ def post_novel():
             )
         dbc.commit()
         return redirect(url_for('account_settings'))
-    cur.execute('SELECT (genre) FROM "genre" WHERE genre_type = \'genre_\'')
+    cur.execute(
+        'SELECT (genre) FROM "genre" \
+        WHERE genre_type = \'genre_\' ORDER BY genre'
+    )
     return render_template('post_novel.html',genres=cur.fetchall())
 
-@app.route('/search', methods=['GET', 'POST'])
+@app.route('/search')
 def search():
-    return render_template('search_novel.html')
+    dbc = get_dbc()
+    cur = dbc.cursor()
+    cur.execute(
+        'SELECT (genre) FROM "genre" \
+        WHERE genre_type = \'genre_\' ORDER BY genre'
+    )
+    return render_template('search_novel.html', genres=cur.fetchall())
 
 # decorator app.teardown_appcontext registers a function to be called
 # when the application context ends.
