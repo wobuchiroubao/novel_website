@@ -1,0 +1,19 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <div>Publish new novel:</div>
+    <form method="POST">
+      <label for="name">Name:</label><br>
+      <input type="text" id="name" name="name"><br>
+      <label for="descr">Description:</label><br>
+      <input type="text" id="descr" name="description"><br>
+      <div>Genres:</div>
+      {% for rec in data %}
+        <label for={{ rec }}>{{ rec['genre'] }}:</label>
+        <input type="checkbox" id={{ rec }} name="genre" value={{ rec['genre'] }}><br>
+      {% endfor %}
+      <input type="submit" value="Publish"><br>
+    </form>
+  </body>
+</html>

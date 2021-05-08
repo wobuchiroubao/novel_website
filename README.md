@@ -21,11 +21,17 @@ SECRET_KEY='very secret key'
 ```
 where `SECRET_KEY` stands for the key for client session security.
 
-Change the current directory to the target one (the one where you're storing application files), set the environment variable `CONFIG` to the path to your configuration and then load the database configuration `schema.sql`:
+Change the current directory to the target one (the one where you're storing application files), set the environment variable `CONFIG` to the path to your configuration and then load the database configuration `schema.sql` and add a chief administrator of the website:
 ```
 $ export CONFIG='/path/to/config/file'
 $ psql -d dbname < schema.sql
+$ psql -d dbname
+# INSERT INTO "user" (nickname, password, e_mail, rights)
+  VALUES ('nickname', 'password', 'email', 'chief_admin_');
+# quit;
 ```
+where `'nickname'` and `'password'` can be chosen according to your tastes, `'email'` stands for the email of the chief administrator
+and `'chief_admin_'` should be typed as it is.
 
 ### Running
 Just type the following command in the target directory:

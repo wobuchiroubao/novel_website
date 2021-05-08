@@ -26,7 +26,10 @@ def get_dbc():
 
 @app.route('/', methods=['GET', 'POST'])
 def main_page():
-    return render_template('main_page.html', logged_in=('user_id' in session))
+    return render_template(
+        'main_page.html', logged_in='user_id' in session,
+        rights=session.get('user_rights')
+    )
 
 @app.route('/novels_list', methods=['POST'])
 def novels_list():
@@ -52,16 +55,25 @@ def register():
     if request.method == 'POST':
         if request.form['password'] != request.form['password_rep']:
             abort(400)
+        rights = 'admin_' if session.get('user_rights') == 'chief_admin_' \
+            else 'user_'
         dbc = get_dbc()
         cur = dbc.cursor()
         cur.execute(
-            'INSERT INTO "user" (nickname, password, e_mail) VALUES (%s, %s, %s)',
-            [request.form['nickname'], request.form['password'],
+            'INSERT INTO "user" (rights, nickname, password, e_mail) \
+            VALUES (%s, %s, %s, %s)',
+            [rights, request.form['nickname'], request.form['password'],
             request.form['e_mail']]
         )
         dbc.commit()
-        return redirect(url_for('login'))
-    return render_template('register.html')
+        if session.get('user_rights') == 'chief_admin_':
+            return redirect(url_for('administration_settings'))
+        else:
+            return redirect(url_for('login'))
+    return render_template(
+        'register.html', logged_in='user_id' in session,
+        rights=session.get('user_rights')
+    )
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -78,12 +90,14 @@ def login():
         if rec['password'] != request.form['password']:
             abort(400)
         session['user_id'] = rec['id']
+        session['user_rights'] = rec['rights']
         return redirect(url_for('main_page'))
     return render_template('login.html')
 
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
+    session.pop('user_rights', None)
     return redirect(url_for('main_page'))
 
 @app.route('/account_settings', methods=['GET', 'POST'])
@@ -124,6 +138,21 @@ def account_settings_post(dbc, cur):
     )
     dbc.commit()
 
+@app.route('/administration_settings', methods=['GET', 'POST'])
+def administration_settings():
+    if request.method == 'POST':
+        dbc = get_dbc()
+        cur = dbc.cursor()
+        cur.execute(
+            'INSERT INTO "genre" (genre, genre_type) \
+            VALUES (%s, %s)',
+            [request.form['genre'], 'genre_']
+        )
+        dbc.commit()
+    return render_template(
+        'administration_settings.html', rights=session.get('user_rights')
+    )
+
 @app.route('/post_novel', methods=['GET', 'POST'])
 def post_novel():
     dbc = get_dbc()
@@ -143,7 +172,7 @@ def post_novel():
             )
         dbc.commit()
         return redirect(url_for('account_settings'))
-    cur.execute('SELECT (genre) FROM "genre"')
+    cur.execute('SELECT (genre) FROM "genre" WHERE genre_type = \'genre_\'')
     return render_template('post_novel.html',data=cur.fetchall())
 
 @app.route('/search', methods=['GET', 'POST'])

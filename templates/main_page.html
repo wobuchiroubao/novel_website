@@ -6,6 +6,9 @@
     <hr></hr><br>
     {% if logged_in %}
       <a href={{ url_for('account_settings') }}>Account settings</a>
+      {% if rights == 'chief_admin_' or rights == 'admin_' %}
+        <a href={{ url_for('administration_settings') }}>Administration settings</a>
+      {% endif %}
       <a href={{ url_for('logout') }}>Logout</a><br>
     {% else %}
       <a href={{ url_for('register') }}>Register</a>

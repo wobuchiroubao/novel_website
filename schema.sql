@@ -7,9 +7,13 @@ DROP TABLE IF EXISTS "chapter";
 DROP TABLE IF EXISTS "novel";
 DROP TABLE IF EXISTS "user";
 DROP TYPE IF EXISTS "rights";
+DROP TYPE IF EXISTS "genre_type";
 
 CREATE TYPE "rights" AS
-ENUM ('admin_','user_');
+ENUM ('chief_admin_', 'admin_','user_');
+
+CREATE TYPE "genre_type" AS
+ENUM ('genre_', 'tag_');
 
 CREATE TABLE "user" (
 	id serial NOT NULL,
@@ -93,6 +97,7 @@ CREATE TABLE "favourite" (
 CREATE TABLE "genre" (
 	id serial NOT NULL,
 	genre varchar(60) NOT NULL,
+	genre_type genre_type NOT NULL DEFAULT 'tag_',
 	CONSTRAINT genre_pk PRIMARY KEY (id),
 	CONSTRAINT genre_uq UNIQUE (genre)
 );

@@ -1,0 +1,16 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <a href={{ url_for('main_page') }}>Home page</a><br>
+    <hr></hr><br>
+    {% if rights == 'chief_admin_' %}
+      <a href={{ url_for('register') }}>Create administrator</a><br>
+    {% endif %}
+    <form method="POST">
+      <label for="genre">Add Genre:</label><br>
+      <input type="text" id="genre" name="genre"><br>
+      <input type="submit" value="Submit"><br>
+    </form>
+  </body>
+</html>
