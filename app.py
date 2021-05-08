@@ -6,7 +6,6 @@ import psycopg2 as dbc
 from psycopg2.extras import DictCursor
 
 app = Flask(__name__) # create application instance
-#app.config.from_object('.default_config')
 app.config.from_envvar('CONFIG')
 
 def connect_db():
@@ -92,20 +91,7 @@ def account_settings():
     dbc = get_dbc()
     cur = dbc.cursor()
     if request.method == 'POST':
-        set_var = None
-        if 'new_login' in request.form:
-            set_var = 'nickname'
-        elif 'new_password' in request.form:
-            set_var = 'password'
-        elif 'new_e_mail' in request.form:
-            set_var = 'e_mail'
-        else:
-            abort(400)
-        cur.execute(
-            'UPDATE "user" SET ' + set_var + ' = %s WHERE id = %s',
-            [request.form['new_login'], session['user_id']]
-        )
-        dbc.commit()
+        account_settings_post(dbc, cur)
     cur.execute(
         'SELECT nickname FROM "user" WHERE id = %s', [session['user_id']]
     )
@@ -115,6 +101,28 @@ def account_settings():
         [session['user_id']])
     data = cur.fetchall()
     return render_template('account_settings.html', nickname=nickname, data=data)
+
+def account_settings_post(dbc, cur):
+    set_var = None
+    if 'new_login' in request.form:
+        set_var = 'nickname'
+    elif 'new_password' in request.form:
+        if request.form['new_password'] != request.form['new_password_rep']:
+            abort(400)
+        set_var = 'password'
+    elif 'new_e_mail' in request.form:
+        set_var = 'e_mail'
+    else:
+        abort(300)
+    cur.execute(
+        'UPDATE "user" SET ' + set_var + ' = %s WHERE id = %s',
+        [
+            request.form.get('new_login')
+            or request.form.get('new_password')
+            or request.form.get('new_e_mail'), session['user_id']
+        ]
+    )
+    dbc.commit()
 
 @app.route('/post_novel', methods=['GET', 'POST'])
 def post_novel():
