@@ -31,6 +31,27 @@ def main_page():
         rights=session.get('user_rights')
     )
 
+@app.route('/novel/<int:novel_id>')
+def novel(novel_id):
+    dbc = get_dbc()
+    cur = dbc.cursor()
+    cur.execute(
+        'SELECT name, description, rating, votes, "user".nickname AS author \
+        FROM "novel" JOIN "user" ON "novel".id_user = "user".id \
+        WHERE "novel".id = %s',
+        [novel_id]
+    )
+    cur_gen = dbc.cursor()
+    cur_gen.execute(
+        'SELECT "genre".id, "genre".genre \
+        FROM "genre" JOIN "genre_aux" ON "genre".id = "genre_aux".id_genre \
+        WHERE "genre_aux".id_novel = %s ORDER BY "genre".genre',
+        [novel_id]
+    )
+    return render_template(
+        'novel.html', novel=cur.fetchone(), genres=cur_gen.fetchall()
+    )
+
 @app.route('/novels_list', methods=['POST'])
 def novels_list():
     dbc = get_dbc()
@@ -45,8 +66,9 @@ def novels_list():
     cur_gen = dbc.cursor()
     for rec in recs:
         cur.execute(
-            'SELECT name, rating, id_user AS author, description FROM "novel" \
-            WHERE id = %s',
+            'SELECT "novel".id, name, description, rating, "user".nickname AS author \
+            FROM "novel" JOIN "user" ON "novel".id_user = "user".id \
+            WHERE "novel".id = %s',
             [rec['id']]
         )
         cur_gen.execute(
