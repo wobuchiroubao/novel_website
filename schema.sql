@@ -10,7 +10,7 @@ DROP TYPE IF EXISTS "rights";
 DROP TYPE IF EXISTS "genre_type";
 
 CREATE TYPE "rights" AS
-ENUM ('chief_admin_', 'admin_','user_');
+ENUM ('admin_','user_');
 
 CREATE TYPE "genre_type" AS
 ENUM ('genre_', 'tag_');

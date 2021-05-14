@@ -182,18 +182,16 @@ def register():
     if request.method == 'POST':
         if request.form['password'] != request.form['password_rep']:
             abort(400)
-        rights = 'admin_' if session.get('user_rights') == 'chief_admin_' \
-            else 'user_'
         dbc = get_dbc()
         cur = dbc.cursor()
         cur.execute(
             'INSERT INTO "user" (rights, nickname, password, e_mail) \
             VALUES (%s, %s, %s, %s)',
-            [rights, request.form['nickname'], request.form['password'],
+            [session.get('user_rights'), request.form['nickname'], request.form['password'],
             request.form['e_mail']]
         )
         dbc.commit()
-        if session.get('user_rights') == 'chief_admin_':
+        if session.get('user_rights') == 'admin_':
             return redirect(url_for('administration_settings'))
         else:
             return redirect(url_for('login'))
