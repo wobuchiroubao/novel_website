@@ -25,7 +25,6 @@ Change the current directory to the target one (the one where you're storing app
 ```
 $ export CONFIG='/path/to/config/file'
 $ psql -d dbname < schema.sql
-$ psql -d dbname
 ```
 
 Add the first administrator of the website:

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import bcrypt
 from flask import Flask, request, session, g, redirect, url_for, abort, \
     render_template, flash
 import os
@@ -187,7 +188,10 @@ def register():
         cur.execute(
             'INSERT INTO "user" (rights, nickname, password, e_mail) \
             VALUES (%s, %s, %s, %s)',
-            [session.get('user_rights'), request.form['nickname'], request.form['password'],
+            [session.get('user_rights') or 'user_', request.form['nickname'],
+            bcrypt.hashpw(
+                request.form['password'].encode(), bcrypt.gensalt()
+            ).decode(),
             request.form['e_mail']]
         )
         dbc.commit()
@@ -212,7 +216,9 @@ def login():
         rec = cur.fetchone()
         if rec is None:
             abort(400)
-        if rec['password'] != request.form['password']:
+        if not bcrypt.checkpw(
+            request.form['password'].encode(), rec['password'].encode()
+        ):
             abort(400)
         session['user_id'] = rec['id']
         session['user_rights'] = rec['rights']

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-import os.path as op
-from getpass import getpass
+import bcrypt
 from flask import Config
+from getpass import getpass
+import os.path as op
 import psycopg2 as dbc
 from sys import exit
 
@@ -16,18 +17,19 @@ def connect_db():
     )
 
 if __name__ == '__main__':
-    admin_name = input("""Enter admin's nickname: """)
-    admin_passwd = getpass(prompt='Enter password: ')
-    if getpass(prompt='Repeat password: ') != admin_passwd:
+    name = input("""Enter admin's nickname: """)
+    passwd = getpass(prompt='Enter password: ')
+    if getpass(prompt='Repeat password: ') != passwd:
         print("""Error: Password and its repetition don't match.""")
         exit()
-    admin_e_mail = input('Enter email: ')
+    passwd_hash = bcrypt.hashpw(passwd.encode(), bcrypt.gensalt()).decode()
+    e_mail = input('Enter email: ')
     dbc = connect_db()
     cur = dbc.cursor()
     cur.execute(
         """INSERT INTO "user" (nickname, password, e_mail, rights) \
         VALUES (%s, %s, %s, 'admin_')""",
-        (admin_name, admin_passwd, admin_e_mail)
+        (name, passwd_hash, e_mail)
     )
     dbc.commit()
     dbc.close()

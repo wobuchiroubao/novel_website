@@ -19,7 +19,7 @@ CREATE TABLE "user" (
 	id serial NOT NULL,
 	rights rights NOT NULL DEFAULT 'user_',
 	nickname varchar(100) NOT NULL,
-	password varchar(1000) NOT NULL,
+	password CHAR(60) NOT NULL,
 	reg_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	e_mail varchar(40) NOT NULL,
 	CONSTRAINT user_pk PRIMARY KEY (id),
