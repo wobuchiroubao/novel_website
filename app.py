@@ -1,9 +1,18 @@
 #!/usr/bin/env python3
 import bcrypt
-from flask import Flask, request, session, g, redirect, url_for, abort, \
-    render_template, flash
+from flask import (
+    Flask,
+    request,
+    session,
+    g,
+    redirect,
+    url_for,
+    abort,
+    render_template,
+    jsonify
+)
 import os
-import psycopg2 as dbc
+import psycopg2 as db
 from psycopg2.extras import DictCursor
 
 app = Flask(__name__) # create application instance
@@ -11,7 +20,7 @@ app.config.from_envvar('CONFIG')
 
 def connect_db():
     """Connects to the database"""
-    return dbc.connect(
+    return db.connect(
         dbname=app.config['DBNAME'], user=app.config['USER'],
         password=app.config['PASSWORD'], host=app.config['HOST'],
         cursor_factory=DictCursor
@@ -182,23 +191,33 @@ def sql_find_novel_template():
 def register():
     if request.method == 'POST':
         if request.form['password'] != request.form['password_rep']:
-            abort(400)
+            return jsonify(url=None, err='Passwords don\'t match.')
         dbc = get_dbc()
         cur = dbc.cursor()
-        cur.execute(
-            'INSERT INTO "user" (rights, nickname, password, e_mail) \
-            VALUES (%s, %s, %s, %s)',
-            [session.get('user_rights') or 'user_', request.form['nickname'],
-            bcrypt.hashpw(
-                request.form['password'].encode(), bcrypt.gensalt()
-            ).decode(),
-            request.form['e_mail']]
-        )
+        try:
+            cur.execute(
+                'INSERT INTO "user" (rights, nickname, password, e_mail) \
+                VALUES (%s, %s, %s, %s)',
+                [session.get('user_rights') or 'user_', request.form['nickname'],
+                bcrypt.hashpw(
+                    request.form['password'].encode(), bcrypt.gensalt()
+                ).decode(),
+                request.form['e_mail']]
+            )
+        except db.errors.UniqueViolation as err:
+            if 'nickname' in str(err):
+                return jsonify(
+                    url=None, err='User with this nickname already exists.'
+                )
+            else:
+                return jsonify(
+                    url=None, err='User with this email already exists.'
+                )
         dbc.commit()
         if session.get('user_rights') == 'admin_':
-            return redirect(url_for('administration_settings'))
+            return jsonify(url=url_for('administration_settings'), err=None)
         else:
-            return redirect(url_for('login'))
+            return jsonify(url=url_for('login'), err=None)
     return render_template(
         'register.html', logged_in='user_id' in session,
         rights=session.get('user_rights')
