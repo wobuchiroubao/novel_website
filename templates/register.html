@@ -1,6 +1,6 @@
 <html>
   <head>
-    <script src="{{ url_for('static', filename='register.js') }}"></script>
+    <script src="{{ url_for('static', filename='register_login.js') }}"></script>
   </head>
   <body>
     {% if logged_in and rights == 'admin_' %}
@@ -8,7 +8,7 @@
     {% else %}
       <div>Registration:</div>
     {% endif %}
-    <form method="POST" id="reg_form" onsubmit='handle_reg(event, {{ url_for('register') | tojson }})'>
+    <form method="POST" id="reg_form" onsubmit='handle_register_login(event, {{ url_for('register') | tojson }}, "reg_form", "error")'>
       <label for="nickname">Nickname (aka login):</label><br>
       <input type="text" id="nickname" name="nickname"><br>
       <label for="passwd">Password:</label><br>

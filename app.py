@@ -234,14 +234,16 @@ def login():
         )
         rec = cur.fetchone()
         if rec is None:
-            abort(400)
+            return jsonify(
+                url=None, err='User with this nickname doesn\'t exist.'
+            )
         if not bcrypt.checkpw(
             request.form['password'].encode(), rec['password'].encode()
         ):
-            abort(400)
+            return jsonify(url=None, err='Wrong password.')
         session['user_id'] = rec['id']
         session['user_rights'] = rec['rights']
-        return redirect(url_for('main_page'))
+        return jsonify(url=url_for('main_page'), err=None)
     return render_template('login.html')
 
 @app.route('/logout')

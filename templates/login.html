@@ -1,13 +1,15 @@
 <html>
   <head>
+    <script src="{{ url_for('static', filename='register_login.js') }}"></script>
   </head>
   <body>
     <div>Logging in:</div>
-    <form method="POST">
+    <form method="POST" id="login_form" onsubmit='handle_register_login(event, {{ url_for('login') | tojson }}, "login_form", "error")'>
       <label for="login">Login:</label><br>
       <input type="text" id="login" name="login"><br>
       <label for="passwd">Password:</label><br>
       <input type="text" id="passwd" name="password"><br>
+      <div id="error" style="background-color:tomato;" style.display="none" ></div>
       <input type="submit" value="Submit"><br>
     </form>
   </body>
