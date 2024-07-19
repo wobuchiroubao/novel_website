@@ -1,8 +1,9 @@
 <html>
   <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   </head>
   <body>
-    <div>Here should be the name of website...</div>
+    <h1 id="header">Here should be the name of website...</h1>
     <hr></hr><br>
     {% if logged_in %}
       <a href={{ url_for('account_settings') }}>Account settings</a>
