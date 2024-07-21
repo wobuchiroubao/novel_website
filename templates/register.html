@@ -1,24 +1,25 @@
-<html>
-  <head>
-    <script src="{{ url_for('static', filename='register_login.js') }}"></script>
-  </head>
-  <body>
-    {% if logged_in and rights == 'admin_' %}
-      <div>Registration of administrator:</div>
-    {% else %}
-      <div>Registration:</div>
-    {% endif %}
-    <form method="POST" id="reg_form" onsubmit='handle_register_login(event, {{ url_for('register') | tojson }}, "reg_form", "error")'>
-      <label for="nickname">Nickname (aka login):</label><br>
-      <input type="text" id="nickname" name="nickname"><br>
-      <label for="passwd">Password:</label><br>
-      <input type="text" id="passwd" name="password"><br>
-      <label for="passwd_rep">Repeat the password:</label><br>
-      <input type="text" id="passwd_rep" name="password_rep"><br>
-      <label for="e_mail">E-mail:</label><br>
-      <input type="text" id="e_mail" name="e_mail"><br>
-      <div id="error" style="background-color:tomato;" style.display="none" ></div>
-      <input type="submit" value="Submit"><br>
-    </form>
-  </body>
-</html>
+{% extends 'base.html' %}
+
+{% block head %}
+  <script src="{{ url_for('static', filename='register_login.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+  {% if logged_in and rights == 'admin_' %}
+    <div>Registration of administrator:</div>
+  {% else %}
+    <div>Registration:</div>
+  {% endif %}
+  <form method="POST" id="reg_form" onsubmit='handle_register_login(event, {{ url_for('register') | tojson }}, "reg_form", "error")'>
+    <label for="nickname">Nickname (aka login):</label><br>
+    <input type="text" id="nickname" name="nickname"><br>
+    <label for="passwd">Password:</label><br>
+    <input type="text" id="passwd" name="password"><br>
+    <label for="passwd_rep">Repeat the password:</label><br>
+    <input type="text" id="passwd_rep" name="password_rep"><br>
+    <label for="e_mail">E-mail:</label><br>
+    <input type="text" id="e_mail" name="e_mail"><br>
+    <div id="error" style="background-color:tomato;" style.display="none" ></div>
+    <input type="submit" value="Submit"><br>
+  </form>
+{% endblock %}

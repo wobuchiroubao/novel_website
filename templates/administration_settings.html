@@ -1,14 +1,12 @@
-<html>
-  <head>
-  </head>
-  <body>
-    <a href={{ url_for('main_page') }}>Home page</a><br>
-    <hr></hr><br>
-    <a href={{ url_for('register') }}>Create administrator</a><br>
-    <form method="POST">
-      <label for="genre">Add Genre:</label><br>
-      <input type="text" id="genre" name="genre"><br>
-      <input type="submit" value="Submit"><br>
-    </form>
-  </body>
-</html>
+{% extends 'base.html' %}
+
+{% block body %}
+  <a href={{ url_for('main_page') }}>Home page</a><br>
+  <hr></hr><br>
+  <a href={{ url_for('register') }}>Create administrator</a><br>
+  <form method="POST">
+    <label for="genre">Add Genre:</label><br>
+    <input type="text" id="genre" name="genre"><br>
+    <input type="submit" value="Submit"><br>
+  </form>
+{% endblock %}

@@ -1,16 +1,14 @@
-<html>
-  <head>
-  </head>
-  <body>
-    <div>{{ novel['name'] }}</div>
-    <hr></hr><br>
-    <div>Rating: {{ novel['rating'] }}</div>
-    <div>Votes: {{ novel['votes'] }}</div>
-    {% for rec in genres %}
-      <span>{{ rec['genre'] }}, </span>
-    {% endfor %}
-    <div>Author: {{ novel['author'] }}</div><br>
-    <div>Description:</div>
-    <div>{{ novel['description'] }}</div>
-  </body>
-</html>
+{% extends 'base.html' %}
+
+{% block body %}
+  <div>{{ novel['name'] }}</div>
+  <hr></hr><br>
+  <div>Rating: {{ novel['rating'] }}</div>
+  <div>Votes: {{ novel['votes'] }}</div>
+  {% for rec in genres %}
+    <span>{{ rec['genre'] }}, </span>
+  {% endfor %}
+  <div>Author: {{ novel['author'] }}</div><br>
+  <div>Description:</div>
+  <div>{{ novel['description'] }}</div>
+{% endblock %}

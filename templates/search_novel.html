@@ -1,47 +1,45 @@
-<html>
-  <head>
-  </head>
-  <body>
-    <div>Series finder:</div><br>
-    <form action={{ url_for('novels_list') }} method="POST">
-      <label for="chapters_min_max">Chapters[</label>
-      <select id="chapters_min_max" name="chapters_min_max">
-        <option value="min">min</option>
-        <option value="max">max</option>
-      </select>
-      <label for="chapters_min_max">]</label>
-      <input type="text" name="chapters"><br><br>
+{% extends 'base.html' %}
 
-      <label for="rating_min_max">Rating[</label>
-      <select id="rating_min_max" name="rating_min_max">
-        <option value="min">min</option>
-        <option value="max">max</option>
-      </select>
-      <label for="rating_min_max">]</label>
-      <input type="text" name="rating"><br><br>
+{% block body %}
+  <div>Series finder:</div><br>
+  <form action={{ url_for('novels_list') }} method="POST">
+    <label for="chapters_min_max">Chapters[</label>
+    <select id="chapters_min_max" name="chapters_min_max">
+      <option value="min">min</option>
+      <option value="max">max</option>
+    </select>
+    <label for="chapters_min_max">]</label>
+    <input type="text" name="chapters"><br><br>
 
-      <label for="genre_and_or">Genre[</label>
-      <select id="genre_and_or" name="genre_and_or">
-        <option value="and">and</option>
-        <option value="or">or</option>
-      </select>
-      <label for="genre_and_or">]</label><br>
-      {% for rec in genres %}
-        <label for={{ rec }}>{{ rec['genre'] }}:</label>
-        <input type="checkbox" id={{ rec }} name="genre" value={{ rec['genre'] }}><br>
-      {% endfor %}<br>
+    <label for="rating_min_max">Rating[</label>
+    <select id="rating_min_max" name="rating_min_max">
+      <option value="min">min</option>
+      <option value="max">max</option>
+    </select>
+    <label for="rating_min_max">]</label>
+    <input type="text" name="rating"><br><br>
 
-      <label for="sort_field">Sort results by:</label><br>
-      <select id="sort_field" name="sort_field">
-        <option value="rating">rating</option>
-        <option value="chapters">chapters</option>
-      </select>
-      <select id="sort_order" name="sort_order">
-        <option value="desc">descending</option>
-        <option value="asc">ascending</option>
-      </select><br><br>
+    <label for="genre_and_or">Genre[</label>
+    <select id="genre_and_or" name="genre_and_or">
+      <option value="and">and</option>
+      <option value="or">or</option>
+    </select>
+    <label for="genre_and_or">]</label><br>
+    {% for rec in genres %}
+      <label for={{ rec }}>{{ rec['genre'] }}:</label>
+      <input type="checkbox" id={{ rec }} name="genre" value={{ rec['genre'] }}><br>
+    {% endfor %}<br>
 
-      <input type="submit" value="Find"><br>
-    </form>
-  </body>
-</html>
+    <label for="sort_field">Sort results by:</label><br>
+    <select id="sort_field" name="sort_field">
+      <option value="rating">rating</option>
+      <option value="chapters">chapters</option>
+    </select>
+    <select id="sort_order" name="sort_order">
+      <option value="desc">descending</option>
+      <option value="asc">ascending</option>
+    </select><br><br>
+
+    <input type="submit" value="Find"><br>
+  </form>
+{% endblock %}

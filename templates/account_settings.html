@@ -1,49 +1,47 @@
-<html>
-  <head>
-  </head>
-  <body>
-    <a href={{ url_for('main_page') }}>Home page</a><br>
-    <hr></hr><br>
-    <div>{{ nickname }}</div>
-    <div>Account settings:</div><br>
-    <form method="POST">
-      <div>Change nickname:</div>
-      <label for="login">New nickname:</label><br>
-      <input type="text" id="login" name="new_login"><br>
-      <input type="submit" value="Submit"><br>
-    </form>
-    <form method="POST">
-      <div>Change password:</div>
-      <label for="passwd">New password:</label><br>
-      <input type="text" id="passwd" name="new_password"><br>
-      <label for="passwd_rep">Repeat password:</label><br>
-      <input type="text" id="passwd_rep" name="new_password_rep"><br>
-      <input type="submit" value="Submit"><br>
-    </form>
-    <form method="POST">
-      <div>Change e_mail:</div>
-      <label for="e_mail">New e_mail:</label><br>
-      <input type="text" id="e_mail" name="new_e_mail"><br>
-      <input type="submit" value="Submit"><br>
-    </form>
-    <a href={{ url_for('post_novel') }}>Publish new novel</a><br>
-    <div>My novels:</div>
-    <table border="1">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for row in data %}
-        <tr>
-          {% for cell in row %}
-          <td>{{ cell }}</td>
-          {% endfor %}
-        </tr>
+{% extends 'base.html' %}
+
+{% block body %}
+  <a href={{ url_for('main_page') }}>Home page</a><br>
+  <hr></hr><br>
+  <div>{{ nickname }}</div>
+  <div>Account settings:</div><br>
+  <form method="POST">
+    <div>Change nickname:</div>
+    <label for="login">New nickname:</label><br>
+    <input type="text" id="login" name="new_login"><br>
+    <input type="submit" value="Submit"><br>
+  </form>
+  <form method="POST">
+    <div>Change password:</div>
+    <label for="passwd">New password:</label><br>
+    <input type="text" id="passwd" name="new_password"><br>
+    <label for="passwd_rep">Repeat password:</label><br>
+    <input type="text" id="passwd_rep" name="new_password_rep"><br>
+    <input type="submit" value="Submit"><br>
+  </form>
+  <form method="POST">
+    <div>Change e_mail:</div>
+    <label for="e_mail">New e_mail:</label><br>
+    <input type="text" id="e_mail" name="new_e_mail"><br>
+    <input type="submit" value="Submit"><br>
+  </form>
+  <a href={{ url_for('post_novel') }}>Publish new novel</a><br>
+  <div>My novels:</div>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in data %}
+      <tr>
+        {% for cell in row %}
+        <td>{{ cell }}</td>
         {% endfor %}
-      </tbody>
-    </table>
-  </body>
-</html>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
