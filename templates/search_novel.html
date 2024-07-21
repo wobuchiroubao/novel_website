@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
 
+{% block header %}
+  <h2>
+  {% block title %}
+    Advanced Search
+  {% endblock %}
+  </h2>
+{% endblock %}
+
 {% block body %}
-  <div>Series finder:</div><br>
   <form action={{ url_for('novels_list') }} method="POST">
     <label for="chapters_min_max">Chapters[</label>
     <select id="chapters_min_max" name="chapters_min_max">

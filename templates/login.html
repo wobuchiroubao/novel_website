@@ -1,11 +1,18 @@
 {% extends 'base.html' %}
 
+{% block header %}
+  <h2>
+  {% block title %}
+    Log In
+  {% endblock %}
+  </h2>
+{% endblock %}
+
 {% block head %}
   <script src="{{ url_for('static', filename='register_login.js') }}"></script>
 {% endblock %}
 
 {% block body %}
-  <div>Logging in:</div>
   <form method="POST" id="login_form" onsubmit='handle_register_login(event, {{ url_for('login') | tojson }}, "login_form", "error")'>
     <label for="login">Login:</label><br>
     <input type="text" id="login" name="login"><br>

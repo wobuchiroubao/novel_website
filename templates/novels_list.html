@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 
+{% block header %}
+  <h2>
+  {% block title %}
+    Search Results
+  {% endblock %}
+  </h2>
+{% endblock %}
+
 {% block body %}
   <table border="1">
     <thead>

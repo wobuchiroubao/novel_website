@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block title %}
+  Home
+{% endblock %}
+
 {% block body %}
   {% if logged_in %}
     <a href={{ url_for('account_settings') }}>Account settings</a>

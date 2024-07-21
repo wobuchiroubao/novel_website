@@ -1,15 +1,22 @@
 {% extends 'base.html' %}
 
+{% block header %}
+  <h2>
+  {% block title %}
+    {% if logged_in and rights == 'admin_' %}
+      Register new administrator
+    {% else %}
+      Register
+    {% endif %}
+  {% endblock %}
+  </h2>
+{% endblock %}
+
 {% block head %}
   <script src="{{ url_for('static', filename='register_login.js') }}"></script>
 {% endblock %}
 
 {% block body %}
-  {% if logged_in and rights == 'admin_' %}
-    <div>Registration of administrator:</div>
-  {% else %}
-    <div>Registration:</div>
-  {% endif %}
   <form method="POST" id="reg_form" onsubmit='handle_register_login(event, {{ url_for('register') | tojson }}, "reg_form", "error")'>
     <label for="nickname">Nickname (aka login):</label><br>
     <input type="text" id="nickname" name="nickname"><br>

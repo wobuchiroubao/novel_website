@@ -1,11 +1,13 @@
 <html>
   <head>
+    <title>{% block title %}{% endblock %} | Partridge Quill</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     {% block head %}{% endblock %}
   </head>
   <body>
     <h1 id="header">Partridge Quill</h1>
     <hr></hr><br>
+    {% block header %}{% endblock %}
     {% block body %}{% endblock %}
   </body>
 </html>

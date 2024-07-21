@@ -1,8 +1,14 @@
 {% extends 'base.html' %}
 
+{% block header %}
+  <h2>
+  {% block title %}
+    {{ novel['name'] }}
+  {% endblock %}
+  </h2>
+{% endblock %}
+
 {% block body %}
-  <div>{{ novel['name'] }}</div>
-  <hr></hr><br>
   <div>Rating: {{ novel['rating'] }}</div>
   <div>Votes: {{ novel['votes'] }}</div>
   {% for rec in genres %}

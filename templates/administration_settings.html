@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 
+{% block header %}
+  <h2>
+  {% block title %}
+    Administration Settings
+  {% endblock %}
+  </h2>
+{% endblock %}
+
 {% block body %}
   <a href={{ url_for('main_page') }}>Home page</a><br>
   <hr></hr><br>
