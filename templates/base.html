@@ -7,37 +7,35 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     {% block head %}{% endblock %}
   </head>
-  <body>
-    <div class="background">
-      <header>
-        <h1><a id="header" href={{ url_for('main_page') }}>Partridge Quill</a></h1>
-      </header>
-      <nav class="account-settings">
-        {% if logged_in %}
-          <a class="settings" href={{ url_for('account_settings') }}>Account settings</a>
-          {% if rights == 'chief_admin_' or rights == 'admin_' %}
-            <a class="settings" href={{ url_for('administration_settings') }}>Administration settings</a>
-          {% endif %}
-          <a class="settings" href={{ url_for('logout') }}>Logout</a><br>
-        {% else %}
-          <a class="settings" href={{ url_for('register') }}>Register</a>
-          <a class="settings" href={{ url_for('login') }}>Login</a><br>
+  <body class="background">
+    <header>
+      <h1><a id="header" href={{ url_for('main_page') }}>Partridge Quill</a></h1>
+    </header>
+    <nav class="account-settings">
+      {% if logged_in %}
+        <a class="settings" href={{ url_for('account_settings') }}>Account settings</a>
+        {% if rights == 'chief_admin_' or rights == 'admin_' %}
+          <a class="settings" href={{ url_for('administration_settings') }}>Administration settings</a>
         {% endif %}
-      </nav>
-      <nav class="search-line">
-        <a class="search" href={{ url_for('search') }}>Novels</a>
-        <a class="search" href={{ url_for('search') }}>Authors</a>
-        <form class="search" action={{ url_for('novels_list') }} method="POST">
-          <input type="text" id="search" name="novel_name" placeholder="Search...">
-          <input type="submit" value=">">
-        </form>
-      </nav>
-      <section>
-        <header>
-          <h2 id="subheader">{% block subheader %}{% endblock %}</h2>
-        </header>
-        {% block body %}{% endblock %}
-      </section>
-    </div>
+        <a class="settings" href={{ url_for('logout') }}>Logout</a><br>
+      {% else %}
+        <a class="settings" href={{ url_for('register') }}>Register</a>
+        <a class="settings" href={{ url_for('login') }}>Login</a><br>
+      {% endif %}
+    </nav>
+    <nav class="search-line">
+      <a class="search" href={{ url_for('search') }}>Novels</a>
+      <a class="search" href={{ url_for('search') }}>Authors</a>
+      <form class="search" action={{ url_for('novels_list') }} method="POST">
+        <input type="text" id="search" name="novel_name" placeholder="Search...">
+        <input type="submit" value=">">
+      </form>
+    </nav>
+    <section>
+      <header>
+        <h2 id="subheader">{% block subheader %}{% endblock %}</h2>
+      </header>
+      {% block body %}{% endblock %}
+    </section>
   </body>
 </html>

@@ -31,9 +31,6 @@ input {
 }
 
 .background {
-  margin: 0;
-  width: 100vw;
-  height: 100vh;
   background-color: var(--ochre);
   background-image: url('/static/partridge.webp');
   background-repeat: no-repeat;
