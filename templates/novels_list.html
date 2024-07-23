@@ -7,36 +7,18 @@
 {% endblock %}
 
 {% block body %}
-  <table border="1">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Rating</th>
-        <th>Author</th>
-        <th>Genres</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for row in data %}
-      <tr>
-        <td><a href={{ url_for('novel', novel_id=row[0]['id']) }}>{{ row[0]['name'] }}</a></td>
-        <td>{{ row[0]['rating'] }}</td>
-        <td>{{ row[0]['author'] }}</td>
-        <td>
-          <table>
-            <thead>
-            </thead>
-            <tbody>
-              {% for rec in row[1] %}
-                <tr><td>{{ rec['genre'] }}</td></tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </td>
-        <td>{{ row[0]['description'] }}</td>
-      </tr>
+  <ul class="list">
+    {% for row in data %}
+    <li class="list-entry">
+      <a href={{ url_for('novel', novel_id=row[0]['id']) }}>{{ row[0]['name'] }}</a>
+      <p>Author: {{ row[0]['author'] }}</p>
+      <span>Genres: </span>
+      {% for rec in row[1] %}
+        <span>{{ rec['genre'] }}</span>
       {% endfor %}
-    </tbody>
-  </table>
+      <p>Description: {{ row[0]['description'] }}</p>
+      <p>Rating: {{ row[0]['rating'] }}</p>
+    </li>
+    {% endfor %}
+  </ul>
 {% endblock %}

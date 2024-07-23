@@ -72,7 +72,7 @@ a.settings {
 
 .search-line {
   clear: both;
-  margin: 0 auto 0;
+  margin: 0 auto;
   padding: 10px 3vw 0;
   width: 96vw;
   height: 60px;
@@ -94,4 +94,19 @@ form.search {
 
 a:hover, input:hover {
   color: var(--red);
+}
+
+.list {
+  margin: 0 auto;
+  padding-left: 0;
+  width: 96vw;
+}
+
+.list-entry {
+  margin: 10px 0 20px;
+  padding: 10px 3vw;
+  background-color: var(--powder-white);
+  border-radius: 6px;
+  box-shadow: 2px 3px 2px var(--shadow);
+  list-style-type: none;
 }
