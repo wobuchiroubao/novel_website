@@ -6,6 +6,7 @@
   --blue: rgb(51, 82, 176);
   --blue-alpha: rgba(51, 82, 176, 0.85);
   --powder-white: rgb(253, 248, 238);
+  --shadow: rgba(0, 0, 0, 0.4);
 }
 
 * {
@@ -78,6 +79,7 @@ a.settings {
   background-color: var(--blue-alpha);
   border: 3px solid var(--powder-white);
   border-radius: 6px;
+  box-shadow: 1px 2px 2px var(--shadow);
 }
 
 a.search {
