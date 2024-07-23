@@ -1,26 +1,86 @@
-html {
-  color: rgb(0, 0, 0);
-  font-size: 16px;
-  letter-spacing: 0.65px;
-  line-height: 2;
-  text-align: left;
-  padding-left: 40px;
+:root{
+  --ochre: rgb(236, 217, 174);
+  --red: rgb(234, 23, 23);
+  --brown: rgb(121, 59, 30);
+  --dark-brown: rgb(75, 33, 13);
+  --blue: rgb(51, 82, 176);
+  --blue-alpha: rgba(51, 82, 176, 0.85);
+  --powder-white: rgb(253, 248, 238);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, h1, h2, h3, h4, p {
+  margin: 0;
+  padding: 0;
+  color: var(--dark-brown);
+  font-size: 100%;
+  font-weight: normal;
   font-family: sans-serif;
+  font-style: normal;
+  text-align: left;
+  line-height: 2;
+  letter-spacing: 0.5px;
+}
+
+input {
+  color: var(--dark-brown);
+}
+
+.background {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--ochre);
+  background-image: url('/static/partridge.webp');
+  background-repeat: no-repeat;
+  background-size: 250px auto;
+  background-position: 106% 2%;
 }
 
 #header {
-  color: rgb(0, 0, 128);
+  float: left;
+  margin: 0 auto 0 4vw;
+  padding-top: 15px;
+  color: var(--brown);
   font-size: 32px;
+  font-weight: bold;
 }
 
-.text {
-  color: rgb(0, 0, 0);
+.account-settings {
+  float: right;
+  padding-top: 35px;
+  padding-right: 250px; /* backgr img width */
 }
 
-a, input {
-  color: rgb(16, 16, 192);
+a.settings {
+  padding-left: 20px;
+  color: var(--blue);
+}
+
+.search-line {
+  clear: both;
+  margin: 0 auto 0;
+  padding: 10px 3vw 0;
+  width: 96vw;
+  height: 60px;
+  background-color: var(--blue-alpha);
+  border: 3px solid var(--powder-white);
+  border-radius: 6px;
+}
+
+a.search {
+  float: left;
+  padding-right: 20px;
+  color: var(--powder-white);
+}
+
+form.search {
+  float: right;
 }
 
 a:hover, input:hover {
-  color: rgb(192, 16, 16);
+  color: var(--red);
 }
