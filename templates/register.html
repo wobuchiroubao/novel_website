@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block subheader %}
-  <h2>
   {% block title %}
     {% if logged_in and rights == 'admin_' %}
       Register new administrator
@@ -9,7 +8,6 @@
       Register
     {% endif %}
   {% endblock %}
-  </h2>
 {% endblock %}
 
 {% block head %}
