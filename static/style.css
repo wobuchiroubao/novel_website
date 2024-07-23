@@ -47,6 +47,7 @@ input {
   color: var(--brown);
   font-size: 32px;
   font-weight: bold;
+  text-decoration: none;
 }
 
 #subheader {

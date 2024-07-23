@@ -10,7 +10,7 @@
   <body>
     <div class="background">
       <header>
-        <h1 id="header">Partridge Quill</h1>
+        <h1><a id="header" href={{ url_for('main_page') }}>Partridge Quill</a></h1>
       </header>
       <nav class="account-settings">
         {% if logged_in %}
