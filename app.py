@@ -36,10 +36,7 @@ def get_dbc():
 
 @app.route('/', methods=['GET', 'POST'])
 def main_page():
-    return render_template(
-        'main_page.html', logged_in='user_id' in session,
-        rights=session.get('user_rights')
-    )
+    return render_template('main_page.html')
 
 @app.route('/novel/<int:novel_id>')
 def novel(novel_id):
@@ -218,10 +215,7 @@ def register():
             return jsonify(url=url_for('administration_settings'), err=None)
         else:
             return jsonify(url=url_for('login'), err=None)
-    return render_template(
-        'register.html', logged_in='user_id' in session,
-        rights=session.get('user_rights')
-    )
+    return render_template('register.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -301,9 +295,7 @@ def administration_settings():
             [request.form['genre'], 'genre_']
         )
         dbc.commit()
-    return render_template(
-        'administration_settings.html', rights=session.get('user_rights')
-    )
+    return render_template('administration_settings.html')
 
 @app.route('/post_novel', methods=['GET', 'POST'])
 def post_novel():

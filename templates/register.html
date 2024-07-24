@@ -2,7 +2,7 @@
 
 {% block subheader %}
   {% block title %}
-    {% if logged_in and rights == 'admin_' %}
+    {% if 'user_id' in session and session.get('user_rights') == 'admin_' %}
       Register new administrator
     {% else %}
       Register

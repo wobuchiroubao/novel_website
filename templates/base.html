@@ -12,9 +12,9 @@
       <h1><a id="header" href={{ url_for('main_page') }}>Partridge Quill</a></h1>
     </header>
     <nav class="account-settings">
-      {% if logged_in %}
+      {% if 'user_id' in session %}
         <a class="settings" href={{ url_for('account_settings') }}>Account settings</a>
-        {% if rights == 'chief_admin_' or rights == 'admin_' %}
+        {% if session.get('user_rights') == 'admin_' %}
           <a class="settings" href={{ url_for('administration_settings') }}>Administration settings</a>
         {% endif %}
         <a class="settings" href={{ url_for('logout') }}>Logout</a><br>
