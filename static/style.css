@@ -83,6 +83,10 @@ a.settings {
   justify-content: space-between;
 }
 
+.button {
+  cursor: pointer;
+}
+
 a.search {
   padding-right: 20px;
   color: var(--powder-white);
