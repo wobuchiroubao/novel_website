@@ -26,6 +26,10 @@ html, body, h1, h2, h3, h4, p {
   letter-spacing: 0.5px;
 }
 
+h1, h2, h3, h4, a {
+  white-space: nowrap;
+}
+
 input {
   color: var(--dark-brown);
 }
@@ -38,10 +42,14 @@ input {
   background-position: 106% 2vh;
 }
 
+.header-line {
+  margin: 15px 250px 0 4vw;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
 #header {
-  float: left;
-  margin: 0 auto 0 4vw;
-  padding-top: 15px;
   color: var(--brown);
   font-size: 32px;
   font-weight: bold;
@@ -56,19 +64,12 @@ input {
   font-weight: bold;
 }
 
-.account-settings {
-  float: right;
-  padding-top: 35px;
-  padding-right: 250px; /* backgr img width */
-}
-
 a.settings {
   padding-left: 20px;
   color: var(--blue);
 }
 
 .search-line {
-  clear: both;
   margin: 0 auto;
   padding: 10px 3vw 0;
   width: 96vw;
@@ -77,16 +78,14 @@ a.settings {
   border: 3px solid var(--powder-white);
   border-radius: 6px;
   box-shadow: 1px 2px 2px var(--shadow);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
 }
 
 a.search {
-  float: left;
   padding-right: 20px;
   color: var(--powder-white);
-}
-
-form.search {
-  float: right;
 }
 
 a:hover, input:hover {
