@@ -35,7 +35,7 @@ input {
   background-image: url('/static/partridge.webp');
   background-repeat: no-repeat;
   background-size: 250px auto;
-  background-position: 106% 2%;
+  background-position: 106% 2vh;
 }
 
 #header {
