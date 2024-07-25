@@ -9,14 +9,14 @@
 {% block body %}
   <form method="POST">
     <label for="name">Name:</label><br>
-    <input type="text" id="name" name="name"><br>
+    <input type="text" id="name" name="name" required><br>
     <label for="descr">Description:</label><br>
-    <input type="text" id="descr" name="description"><br>
+    <input type="text" id="descr" name="description" required><br>
     <div>Genres:</div>
     {% for rec in genres %}
       <label for={{ rec }}>{{ rec['genre'] }}:</label>
       <input type="checkbox" id={{ rec }} name="genre" value={{ rec['genre'] }}><br>
     {% endfor %}
-    <input class="button" type="submit" value="Publish"><br>
+    <button class="button" type="submit">Publish</button><br>
   </form>
 {% endblock %}

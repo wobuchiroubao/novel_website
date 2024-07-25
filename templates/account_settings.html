@@ -12,22 +12,22 @@
   <form method="POST">
     <div>Change nickname:</div>
     <label for="login">New nickname:</label><br>
-    <input type="text" id="login" name="new_login"><br>
-    <input class="button" type="submit" value="Submit"><br>
+    <input type="text" id="login" name="new_login" required><br>
+    <button class="button" type="submit">Submit</button><br>
   </form>
   <form method="POST">
     <div>Change password:</div>
     <label for="passwd">New password:</label><br>
-    <input type="text" id="passwd" name="new_password"><br>
+    <input type="text" id="passwd" name="new_password" required><br>
     <label for="passwd_rep">Repeat password:</label><br>
-    <input type="text" id="passwd_rep" name="new_password_rep"><br>
-    <input class="button" type="submit" value="Submit"><br>
+    <input type="text" id="passwd_rep" name="new_password_rep" required><br>
+    <button class="button" type="submit">Submit</button><br>
   </form>
   <form method="POST">
     <div>Change e_mail:</div>
     <label for="e_mail">New e_mail:</label><br>
-    <input type="text" id="e_mail" name="new_e_mail"><br>
-    <input class="button" type="submit" value="Submit"><br>
+    <input type="text" id="e_mail" name="new_e_mail" required><br>
+    <button class="button" type="submit">Submit</button><br>
   </form>
   <a href={{ url_for('post_novel') }}>Publish new novel</a><br>
   <div>My novels:</div>

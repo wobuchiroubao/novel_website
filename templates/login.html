@@ -13,10 +13,10 @@
 {% block body %}
   <form method="POST" id="login_form" onsubmit='handle_register_login(event, {{ url_for('login') | tojson }}, "login_form", "error")'>
     <label for="login">Login:</label><br>
-    <input type="text" id="login" name="login"><br>
+    <input type="text" id="login" name="login" required><br>
     <label for="passwd">Password:</label><br>
-    <input type="text" id="passwd" name="password"><br>
+    <input type="text" id="passwd" name="password" required><br>
     <div id="error" style="background-color:tomato;" style.display="none" ></div>
-    <input class="button" type="submit" value="Submit"><br>
+    <button class="button" type="submit">Submit</button><br>
   </form>
 {% endblock %}
