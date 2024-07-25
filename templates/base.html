@@ -31,7 +31,7 @@
         <a class="search" href={{ url_for('search') }}>Novels</a>
         <a class="search" href={{ url_for('search') }}>Authors</a>
       </nav>
-      <form class="search" action={{ url_for('novels_list') }} method="POST">
+      <form class="search" action={{ url_for('search_results') }} method="POST">
         <input type="text" id="search" name="novel_name" placeholder="Search...">
         <button class="button" type="submit">></button>
       </form>

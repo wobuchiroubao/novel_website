@@ -59,8 +59,8 @@ def novel(novel_id):
         'novel.html', novel=cur.fetchone(), genres=cur_gen.fetchall()
     )
 
-@app.route('/novels_list', methods=['POST'])
-def novels_list():
+@app.route('/search_results', methods=['POST'])
+def search_results():
     dbc = get_dbc()
     cur = dbc.cursor()
     recs = None
@@ -85,7 +85,7 @@ def novels_list():
             [rec['id']]
         )
         data.append((cur.fetchone(), cur_gen.fetchall()))
-    return render_template('novels_list.html', data=data)
+    return render_template('search_results.html', data=data)
 
 def find_name(cur):
     cur.execute(
