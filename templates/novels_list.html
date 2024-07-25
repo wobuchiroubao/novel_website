@@ -7,9 +7,9 @@
 {% endblock %}
 
 {% block body %}
-  <ul class="list">
+  <ul>
     {% for row in data %}
-    <li class="list-entry">
+    <li class="content-box">
       <a href={{ url_for('novel', novel_id=row[0]['id']) }}>{{ row[0]['name'] }}</a>
       <p>Author: {{ row[0]['author'] }}</p>
       <span>Genres: </span>

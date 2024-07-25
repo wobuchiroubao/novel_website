@@ -7,12 +7,14 @@
 {% endblock %}
 
 {% block body %}
-  <div>Rating: {{ novel['rating'] }}</div>
-  <div>Votes: {{ novel['votes'] }}</div>
-  {% for rec in genres %}
-    <span>{{ rec['genre'] }}, </span>
-  {% endfor %}
-  <div>Author: {{ novel['author'] }}</div><br>
-  <div>Description:</div>
-  <div>{{ novel['description'] }}</div>
+  <div class="content-box" >
+    <div>Rating: {{ novel['rating'] }}</div>
+    <div>Votes: {{ novel['votes'] }}</div>
+    {% for rec in genres %}
+      <span>{{ rec['genre'] }}, </span>
+    {% endfor %}
+    <div>Author: {{ novel['author'] }}</div><br>
+    <div>Description:</div>
+    <div>{{ novel['description'] }}</div>
+  </div>
 {% endblock %}

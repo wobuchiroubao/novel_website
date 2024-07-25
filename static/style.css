@@ -16,13 +16,16 @@
 html, body, h1, h2, h3, h4, p {
   margin: 0;
   padding: 0;
+  line-height: 2;
+}
+
+html, body, h1, h2, h3, h4, p, button, input, select {
   color: var(--dark-brown);
   font-size: 100%;
   font-weight: normal;
   font-family: sans-serif;
   font-style: normal;
   text-align: left;
-  line-height: 2;
   letter-spacing: 0.5px;
 }
 
@@ -30,8 +33,13 @@ h1, h2, h3, h4, a {
   white-space: nowrap;
 }
 
-input {
-  color: var(--dark-brown);
+input, select {
+  color: var(--blue);
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0;
 }
 
 .background {
@@ -96,15 +104,10 @@ a:hover, input:hover {
   color: var(--red);
 }
 
-.list {
-  margin: 0 auto;
-  padding-left: 0;
+.content-box {
+  margin: 10px auto 20px;
+  padding: 15px 3vw;
   width: 96vw;
-}
-
-.list-entry {
-  margin: 10px 0 20px;
-  padding: 10px 3vw;
   background-color: var(--powder-white);
   border-radius: 6px;
   box-shadow: 2px 3px 2px var(--shadow);

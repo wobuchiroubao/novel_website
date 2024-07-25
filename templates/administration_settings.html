@@ -7,10 +7,12 @@
 {% endblock %}
 
 {% block body %}
-  <a href={{ url_for('register') }}>Create administrator</a><br>
-  <form method="POST">
-    <label for="genre">Add Genre:</label><br>
-    <input type="text" id="genre" name="genre" required><br>
-    <button class="button" type="submit">Submit</button><br>
-  </form>
+  <div class="content-box">
+    <a href={{ url_for('register') }}>Register new administrator</a><br>
+    <form method="POST">
+      <label for="genre">Add Genre:</label><br>
+      <input type="text" id="genre" name="genre" required><br>
+      <button class="button" type="submit">Save</button><br>
+    </form>
+  </div>
 {% endblock %}
