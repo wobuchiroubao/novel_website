@@ -119,3 +119,13 @@ a:hover, input:hover {
   box-shadow: 2px 3px 2px var(--shadow);
   list-style-type: none;
 }
+
+#error {
+  color: var(--red);
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.hide {
+  display: none;
+}
