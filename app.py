@@ -319,18 +319,21 @@ def post_novel():
         )
         novel_id, = cur.fetchone()
         genres = request.form.getlist('genre')
-        for genre in genres:
-            cur.execute(
-                'INSERT INTO "genre_aux" (id_genre, id_novel) VALUES ((SELECT id FROM "genre" WHERE genre = %s), %s)',
-                [genre, novel_id]
-            )
+        for genre_id in genres:
+            try:
+                cur.execute(
+                    'INSERT INTO "genre_aux" (id_genre, id_novel) VALUES (%s, %s)',
+                    [genre_id, novel_id]
+                )
+            except db.errors.DatabaseError:
+                abort(400)
         dbc.commit()
         return redirect(url_for('account_settings'))
     cur.execute(
-        'SELECT (genre) FROM "genre" \
+        'SELECT id, genre FROM "genre" \
         WHERE genre_type = \'genre_\' ORDER BY genre'
     )
-    return render_template('post_novel.html',genres=cur.fetchall())
+    return render_template('post_novel.html', genres=cur.fetchall())
 
 @app.route('/search')
 def search():
