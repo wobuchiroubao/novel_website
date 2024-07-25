@@ -24,23 +24,4 @@
     <input type="text" id="e_mail" name="new_e_mail" required><br>
     <button class="button" type="submit">Save</button><br>
   </form>
-  <a href={{ url_for('post_novel') }}>Publish new novel</a><br>
-  <div>My novels:</div>
-  <table border="1">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for row in data %}
-      <tr>
-        {% for cell in row %}
-        <td>{{ cell }}</td>
-        {% endfor %}
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
 {% endblock %}

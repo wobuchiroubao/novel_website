@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block subheader %}
+  {% block title %}
+    User Profile ({{ nickname }})
+  {% endblock %}
+{% endblock %}
+
+{% block body %}
+  <div class="content-box">
+    <a href={{ url_for('post_novel') }}>Publish new novel</a><br>
+    <h3 class="big-text">My Novels</h3>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in data %}
+        <tr>
+          {% for cell in row %}
+          <td>{{ cell }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

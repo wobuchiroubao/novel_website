@@ -72,6 +72,12 @@ ul, ol {
   font-weight: bold;
 }
 
+.big-text {
+  color: var(--brown);
+  font-size: 24px;
+  font-weight: bold;
+}
+
 a.settings {
   padding-left: 20px;
   color: var(--blue);

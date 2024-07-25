@@ -15,6 +15,7 @@
       <nav>
         {% if 'user_id' in session %}
           <a class="settings" href={{ url_for('account_settings') }}>Account settings</a>
+          <a class="settings" href={{ url_for('user_profile') }}>User profile</a>
           {% if session.get('user_rights') == 'admin_' %}
             <a class="settings" href={{ url_for('administration_settings') }}>Administration settings</a>
           {% endif %}

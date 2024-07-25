@@ -256,11 +256,7 @@ def account_settings():
         'SELECT nickname FROM "user" WHERE id = %s', [session['user_id']]
     )
     nickname, = cur.fetchone()
-    cur.execute(
-        'SELECT name, description FROM "novel" WHERE id_user = %s ORDER BY name',
-        [session['user_id']])
-    data = cur.fetchall()
-    return render_template('account_settings.html', nickname=nickname, data=data)
+    return render_template('account_settings.html', nickname=nickname)
 
 def account_settings_post(dbc, cur):
     set_var = None
@@ -283,6 +279,20 @@ def account_settings_post(dbc, cur):
         ]
     )
     dbc.commit()
+
+@app.route('/user_profile', methods=['GET'])
+def user_profile():
+    dbc = get_dbc()
+    cur = dbc.cursor()
+    cur.execute(
+        'SELECT nickname FROM "user" WHERE id = %s', [session['user_id']]
+    )
+    nickname, = cur.fetchone()
+    cur.execute(
+        'SELECT name, description FROM "novel" WHERE id_user = %s ORDER BY name',
+        [session['user_id']])
+    data = cur.fetchall()
+    return render_template('user_profile.html', nickname=nickname, data=data)
 
 @app.route('/administration_settings', methods=['GET', 'POST'])
 def administration_settings():
