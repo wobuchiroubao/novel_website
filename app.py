@@ -296,16 +296,36 @@ def user_profile():
 
 @app.route('/administration_settings', methods=['GET', 'POST'])
 def administration_settings():
+    dbc = get_dbc()
+    cur = dbc.cursor()
     if request.method == 'POST':
-        dbc = get_dbc()
-        cur = dbc.cursor()
-        cur.execute(
-            'INSERT INTO "genre" (genre, genre_type) \
-            VALUES (%s, %s)',
-            [request.form['genre'], 'genre_']
-        )
+        if 'genre' in request.form:
+            if request.form['action'] == 'save':
+                cur.execute(
+                    'UPDATE "genre" SET genre = %s WHERE id = %s',
+                    [request.form['edit_genre'], request.form['genre']]
+                )
+            elif request.form['action'] == 'delete':
+                cur.execute(
+                    'DELETE FROM "genre" WHERE id = %s',
+                    [request.form['genre']]
+                )
+        else:
+            try:
+                cur.execute(
+                    'INSERT INTO "genre" (genre, genre_type) VALUES (%s, %s)',
+                    [request.form['add_genre'], 'genre_']
+                )
+            except db.errors.UniqueViolation as err:
+                return jsonify(
+                    err='Genre "{}" already exists.'.format(request.form['add_genre'])
+                )
         dbc.commit()
-    return render_template('administration_settings.html')
+    cur.execute(
+        'SELECT id, genre FROM "genre" \
+        WHERE genre_type = \'genre_\' ORDER BY genre'
+    )
+    return render_template('administration_settings.html', genres=cur.fetchall())
 
 @app.route('/post_novel', methods=['GET', 'POST'])
 def post_novel():

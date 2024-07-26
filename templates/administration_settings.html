@@ -6,13 +6,28 @@
   {% endblock %}
 {% endblock %}
 
+{% block head %}
+  <script src="{{ url_for('static', filename='administration_settings.js') }}"></script>
+{% endblock %}
+
 {% block body %}
   <div class="content-box">
     <a href={{ url_for('register') }}>Register new administrator</a><br>
+    <form method="POST" onsubmit='handle_edit_genre(event, "edit_genre")'>
+      <div>Manage Genres</div>
+      {% for rec in genres %}
+        <input type="radio" id={{ rec['id'] }} name="genre" value={{ rec['id'] }} required>
+        <label for={{ rec['id'] }}>{{ rec['genre'] }}</label><br>
+      {% endfor %}
+      <button class="button" type="submit" name="action" value="edit">Edit</button>
+      <button class="button" type="submit" name="action" value="delete">Delete</button><br>
+    </form>
     <form method="POST">
-      <label for="genre">Add Genre:</label><br>
-      <input type="text" id="genre" name="genre" required><br>
+      <label for="add_genre">Add Genre</label><br>
+      <input type="text" id="add_genre" name="add_genre" required><br>
       <button class="button" type="submit">Save</button><br>
     </form>
+
+  <input class="hide" type="text" id="edit_genre" name="edit_genre" required>
   </div>
 {% endblock %}
