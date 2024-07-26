@@ -8,13 +8,11 @@
 
 {% block body %}
   <div class="content-box" >
-    <div>Rating: {{ novel['rating'] }}</div>
-    <div>Votes: {{ novel['votes'] }}</div>
-    {% for rec in genres %}
-      <span>{{ rec['genre'] }}, </span>
-    {% endfor %}
-    <div>Author: {{ novel['author'] }}</div><br>
-    <div>Description:</div>
-    <div>{{ novel['description'] }}</div>
+    <p>Author: {{ novel['author'] }}</p>
+    <span>Genres: {{ genres | join(', ', attribute='genre') }}</span>
+    <p>Description:</p>
+    <p>{{ novel['description'] }}</p>
+    <p class="content-right">Rating: {{ novel['rating'] }}</p>
+    <p class="content-right">Votes: {{ novel['votes'] }}</p>
   </div>
 {% endblock %}
