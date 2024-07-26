@@ -310,6 +310,7 @@ def administration_settings():
                     'DELETE FROM "genre" WHERE id = %s',
                     [request.form['genre']]
                 )
+            dbc.commit()
         else:
             try:
                 cur.execute(
@@ -318,9 +319,11 @@ def administration_settings():
                 )
             except db.errors.UniqueViolation as err:
                 return jsonify(
+                    url=None,
                     err='Genre "{}" already exists.'.format(request.form['add_genre'])
                 )
-        dbc.commit()
+            dbc.commit()
+            return jsonify(url=url_for('administration_settings'), err=None)
     cur.execute(
         'SELECT id, genre FROM "genre" \
         WHERE genre_type = \'genre_\' ORDER BY genre'

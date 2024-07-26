@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% block head %}
-  <script src="{{ url_for('static', filename='register_login.js') }}"></script>
+  <script src="{{ url_for('static', filename='form_submit_error_handling.js') }}"></script>
 {% endblock %}
 
 {% block body %}
-  <form class="content-box" method="POST" id="login_form" onsubmit='handle_register_login(event, {{ url_for('login') | tojson }}, "login_form", "error")'>
+  <form class="content-box" method="POST" id="login_form" onsubmit='handle_form_submit_errors(event, {{ url_for('login') | tojson }}, "error")'>
     <label for="login">User Name:</label><br>
     <input type="text" id="login" name="login" required><br>
     <label for="passwd">Password:</label><br>

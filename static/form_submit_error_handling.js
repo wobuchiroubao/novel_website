@@ -1,9 +1,10 @@
 'use strict';
 
-function handle_register_login(event, url, form_id, err_id) {
+
+function handle_form_submit_errors(event, url, err_id) {
   event.preventDefault();
 
-  let fd = new FormData(document.getElementById(form_id));
+  let fd = new FormData(event.target);
 
   fetch(url, {
     method: 'POST',
@@ -21,6 +22,7 @@ function handle_register_login(event, url, form_id, err_id) {
         err.style.display = 'block';
         err.innerHTML = res.err;
       } else {
+        console.log(res.url);
         location.href = res.url;
       }
     })

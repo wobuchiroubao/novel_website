@@ -8,6 +8,7 @@
 
 {% block head %}
   <script src="{{ url_for('static', filename='administration_settings.js') }}"></script>
+  <script src="{{ url_for('static', filename='form_submit_error_handling.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -22,9 +23,10 @@
       <button class="button" type="submit" name="action" value="edit">Edit</button>
       <button class="button" type="submit" name="action" value="delete">Delete</button><br>
     </form>
-    <form method="POST">
+    <form method="POST" onsubmit='handle_form_submit_errors(event, {{ url_for('administration_settings') | tojson }}, "error")'>
       <label for="add_genre">Add Genre</label><br>
       <input type="text" id="add_genre" name="add_genre" required><br>
+      <div id="error" class="hide"></div>
       <button class="button" type="submit">Save</button><br>
     </form>
 
