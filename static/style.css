@@ -33,6 +33,11 @@ h1, h2, h3, h4, a {
   white-space: nowrap;
 }
 
+p {
+  white-space: wrap;
+  word-break: break-word;
+}
+
 input, select {
   color: var(--blue);
 }
@@ -83,6 +88,12 @@ textarea {
   font-weight: bold;
 }
 
+.big-link {
+  color: var(--blue);
+  font-size: 24px;
+  font-weight: bold;
+}
+
 a.settings {
   padding-left: 20px;
   color: var(--blue);
@@ -123,6 +134,10 @@ a:hover, input:hover {
   border-radius: 6px;
   box-shadow: 2px 3px 2px var(--shadow);
   list-style-type: none;
+}
+
+.content-right {
+  text-align: right;
 }
 
 #error {

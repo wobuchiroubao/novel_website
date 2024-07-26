@@ -10,14 +10,12 @@
   <ul>
     {% for row in data %}
     <li class="content-box">
-      <a href={{ url_for('novel', novel_id=row[0]['id']) }}>{{ row[0]['name'] }}</a>
+      <a class="big-link" href={{ url_for('novel', novel_id=row[0]['id']) }}>{{ row[0]['name'] }}</a>
       <p>Author: {{ row[0]['author'] }}</p>
-      <span>Genres: </span>
-      {% for rec in row[1] %}
-        <span>{{ rec['genre'] }}</span>
-      {% endfor %}
-      <p>Description: {{ row[0]['description'] }}</p>
-      <p>Rating: {{ row[0]['rating'] }}</p>
+      <span>Genres: {{ row[1] | join(', ', attribute='genre') }}</span>
+      <p>Description:</p>
+      <p>{{ row[0]['description'] }}</p>
+      <p class="content-right">Rating: {{ row[0]['rating'] }}</p>
     </li>
     {% endfor %}
   </ul>
