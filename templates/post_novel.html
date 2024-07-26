@@ -14,8 +14,8 @@
     <textarea type="text" id="descr" name="description" rows="10" required></textarea><br>
     <div>Genres:</div>
     {% for rec in genres %}
-      <label for={{ rec['id'] }}>{{ rec['genre'] }}:</label>
-      <input type="checkbox" id={{ rec['id'] }} name="genre" value={{ rec['id'] }}><br>
+      <input type="checkbox" id={{ rec['id'] }} name="genre" value={{ rec['id'] }}>
+      <label for={{ rec['id'] }}>{{ rec['genre'] }}</label><br>
     {% endfor %}
     <button class="button" type="submit">Publish</button><br>
   </form>
