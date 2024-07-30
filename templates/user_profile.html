@@ -1,33 +1,40 @@
 {% extends 'base.html' %}
 
-{% block subheader %}
-  <h2 class="subheader">
-    {% block title %}
-      User Profile ({{ nickname }})
-    {% endblock %}
-  </h2>
+{% block title %}
+  User Profile ({{ nickname }})
 {% endblock %}
 
 {% block body %}
-  <div class="content-box">
-    <a href={{ url_for('post_novel') }}>Publish new novel</a><br>
-    <h3 class="big-text">My Novels</h3>
-    <table border="1">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for row in data %}
-        <tr>
-          {% for cell in row %}
-          <td>{{ cell }}</td>
-          {% endfor %}
-        </tr>
+  <div class="tabs-box">
+    <input type="radio" id="my_novels" name="tab" checked="checked">
+    <label for="my_novels" class="subheader">My Novels</label>
+    <ul id="my_novels" class="tab">
+      {% for row in data %}
+      <li class="content-box">
+        <a class="big-link" href={{ url_for('novel', novel_id=row[0]['id']) }}>{{ row[0]['name'] }}</a>
+        <p>Genres: {{ row[1] | join(', ', attribute='genre') }}</p>
+        <p>Description:</p>
+        <p>{{ row[0]['description'] }}</p>
+        <p class="content-right">Rating: {{ row[0]['rating'] }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <input type="radio" id="publish_novel" name="tab">
+    <label for="publish_novel" class="subheader">Publish Novel</label>
+    <div id="publish_novel" class="tab">
+      <form class="content-box" method="POST">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br>
+        <label for="descr">Description:</label><br>
+        <textarea type="text" id="descr" name="description" rows="10" required></textarea><br>
+        <div>Genres:</div>
+        {% for rec in genres %}
+          <input type="checkbox" id={{ rec['id'] }} name="genre" value={{ rec['id'] }}>
+          <label for={{ rec['id'] }}>{{ rec['genre'] }}</label><br>
         {% endfor %}
-      </tbody>
-    </table>
+        <button class="button" type="submit">Publish</button><br>
+      </form>
+    </div>
   </div>
 {% endblock %}

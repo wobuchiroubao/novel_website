@@ -75,7 +75,7 @@ textarea {
 }
 
 .subheader {
-  margin: 0 auto 0 4vw;
+  margin-left: 4vw;
   padding-top: 35px;
   color: var(--brown);
   font-size: 24px;
@@ -138,6 +138,34 @@ a:hover, input:hover {
 
 .content-right {
   text-align: right;
+}
+
+.tabs-box {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tabs-box input[type="radio"] {
+  display: none;
+}
+
+.tabs-box label {
+  cursor: pointer;
+}
+
+.tabs-box .tab {
+  width: 100%;
+  display: none;
+  order: 1;
+  
+}
+
+.tabs-box input[type="radio"]:checked + label {
+  color: var(--red);
+}
+
+.tabs-box input[type="radio"]:checked + label + .tab {
+  display: block;
 }
 
 #error {

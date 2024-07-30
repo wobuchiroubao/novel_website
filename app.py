@@ -126,14 +126,27 @@ def account_settings():
   return render_template('account_settings.html', nickname=nickname)
 
 
-@app.route('/user_profile', methods=['GET'])
+@app.route('/user_profile', methods=['GET', 'POST'])
 def user_profile():
   dbQuery = db_query.DB(app.config)
+  if request.method == 'POST':
+    try:
+      dbQuery.add_novel(
+        name=request.form['name'],
+        description=request.form['description'],
+        user_id=session['user_id'],
+        genres=request.form.getlist('genre')
+      )
+    except db.errors.DatabaseError:
+      abort(400)
   nickname = dbQuery.get_user_info_by_user_id(id=session['user_id'])['nickname']
   novels = dbQuery.get_novels_by_author_id(session['user_id'])
   data = []
   for novel, in novels:
-    data.append(dbQuery.get_novel_info_by_novel_id(novel))
+    data.append((
+      dbQuery.get_novel_info_by_novel_id(novel),
+      dbQuery.get_genres_info_by_novel_id(novel)
+    ))
   return render_template('user_profile.html', nickname=nickname, data=data)
 
 
@@ -156,23 +169,6 @@ def administration_settings():
         )
       return jsonify(url=url_for('administration_settings'), err=None)
   return render_template('administration_settings.html', genres=dbQuery.get_genres_info())
-
-
-@app.route('/post_novel', methods=['GET', 'POST'])
-def post_novel():
-  dbQuery = db_query.DB(app.config)
-  if request.method == 'POST':
-    try:
-      dbQuery.add_novel(
-        name=request.form['name'],
-        description=request.form['description'],
-        user_id=session['user_id'],
-        genres=request.form.getlist('genre')
-      )
-    except db.errors.DatabaseError:
-      abort(400)
-    return redirect(url_for('account_settings'))
-  return render_template('post_novel.html', genres=dbQuery.get_genres_info())
 
 
 @app.route('/search')
