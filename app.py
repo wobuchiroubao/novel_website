@@ -25,13 +25,30 @@ def main_page():
   return render_template('main_page.html')
 
 
-@app.route('/novel/<int:novel_id>')
+@app.route('/novel/<int:novel_id>', methods=['GET', 'POST'])
 def novel(novel_id):
   dbQuery = db_query.DB(app.config)
+  if request.method == 'POST':
+    try:
+      dbQuery.add_review(
+        user_id=session['user_id'],
+        novel_id=novel_id,
+        rating=request.form['rating'],
+        text=request.form.get('review')
+      )
+    except db.errors.UniqueViolation:
+      return jsonify(
+        url=None,
+        err='You\'ve already left a review.'
+      )
   return render_template(
     'novel.html',
     novel=dbQuery.get_novel_info_by_novel_id(novel_id),
-    genres=dbQuery.get_genres_info_by_novel_id(novel_id)
+    genres=dbQuery.get_genres_info_by_novel_id(novel_id),
+    my_review=dbQuery.get_review_info_by_novel_id_user_id(
+      novel_id=novel_id, user_id=session['user_id']
+    ),
+    reviews=dbQuery.get_reviews_info_by_novel_id(novel_id)
   )
 
 

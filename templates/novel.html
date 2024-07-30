@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block body %}
-  <div class="content-box" >
+  <div class="content-box">
     <p>Author: {{ novel['author'] }}</p>
     <span>Genres: {{ genres | join(', ', attribute='genre') }}</span>
     <p>Description:</p>
@@ -17,4 +17,39 @@
     <p class="content-right">Rating: {{ novel['rating'] }}</p>
     <p class="content-right">Votes: {{ novel['votes'] }}</p>
   </div>
+
+  {% if 'user_id' in session and my_review is none %}
+    <section>
+      <header>
+        <h3 class="subheader">Leave a Review</h3>
+      </header>
+      <form class="content-box" method="POST">
+        <label for="name">Vote:</label><br>
+        {% for i in range(5) %}
+          <input type="radio" id={{ i }} name="rating" value={{ i + 1 }} required>
+          <label for={{ i }}>{{ i + 1 }}</label>
+        {% endfor %}
+        <br>
+        <label for="review">Write a Review (optional):</label><br>
+        <textarea type="text" id="review" name="review" rows="10"></textarea><br>
+        <button class="button" type="submit">Post Review</button><br>
+      </form>
+    </section>
+  {% endif %}
+
+  <section>
+    <header>
+      <h3 class="subheader">Reviews</h3>
+    </header>
+    <ul>
+      {% for row in reviews %}
+      <li class="content-box">
+        <p>Username: {{ row['username'] }}</p>
+        <p>Vote: {{ row['rating'] }}</p>
+        <p>Review:</p>
+        <p>{{ row['text'] }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
 {% endblock %}

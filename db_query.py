@@ -172,3 +172,37 @@ class DB:
             'INSERT INTO "genre_aux" (id_genre, id_novel) VALUES (%s, %s)',
             [genre_id, novel_id]
           )
+
+
+# ---------------------review---------------------
+
+  def get_reviews_info_by_novel_id(self, novel_id):
+    with self.conn:
+      with self.conn.cursor() as cur:
+        cur.execute(
+          'SELECT "review".id, rating, text, "user".nickname AS username FROM "review" \
+          JOIN "user" ON "review".id_user = "user".id WHERE id_novel = %s',
+          [novel_id]
+        )
+        res = cur.fetchall()
+    return res
+
+
+  def get_review_info_by_novel_id_user_id(self, novel_id, user_id):
+    with self.conn:
+      with self.conn.cursor() as cur:
+        cur.execute(
+          'SELECT * FROM "review" WHERE (id_novel = %s AND id_user = %s)',
+          [novel_id, user_id]
+        )
+        res = cur.fetchone()
+    return res
+
+
+  def add_review(self, user_id, novel_id, rating, text=None):
+    with self.conn:
+      with self.conn.cursor() as cur:
+        cur.execute(
+          'INSERT INTO "review" (rating, text, id_novel, id_user) VALUES (%s, %s, %s, %s)',
+          [rating, text, novel_id, user_id]
+        )
