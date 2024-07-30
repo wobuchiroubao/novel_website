@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 
 {% block subheader %}
-  {% block title %}
-    {% if 'user_id' in session and session.get('user_rights') == 'admin_' %}
-      Register Administrator
-    {% else %}
-      Register
-    {% endif %}
-  {% endblock %}
+  <h2 class="subheader">
+    {% block title %}
+      {% if 'user_id' in session and session.get('user_rights') == 'admin_' %}
+        Register Administrator
+      {% else %}
+        Register
+      {% endif %}
+    {% endblock %}
+  </h2>
 {% endblock %}
 
 {% block head %}

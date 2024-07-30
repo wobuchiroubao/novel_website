@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 
 {% block subheader %}
-  {% block title %}
-    User Profile ({{ nickname }})
-  {% endblock %}
+  <h2 class="subheader">
+    {% block title %}
+      User Profile ({{ nickname }})
+    {% endblock %}
+  </h2>
 {% endblock %}
 
 {% block body %}
