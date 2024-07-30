@@ -164,7 +164,9 @@ def user_profile():
       dbQuery.get_novel_info_by_novel_id(novel),
       dbQuery.get_genres_info_by_novel_id(novel)
     ))
-  return render_template('user_profile.html', nickname=nickname, data=data)
+  return render_template(
+    'user_profile.html', nickname=nickname, data=data, genres=dbQuery.get_genres_info()
+  )
 
 
 @app.route('/administration_settings', methods=['GET', 'POST'])
