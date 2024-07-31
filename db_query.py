@@ -180,22 +180,12 @@ class DB:
     with self.conn:
       with self.conn.cursor() as cur:
         cur.execute(
-          'SELECT "review".id, rating, text, "user".nickname AS username FROM "review" \
+          'SELECT "review".id, rating, text, \
+          "user".id AS user_id, "user".nickname AS username FROM "review" \
           JOIN "user" ON "review".id_user = "user".id WHERE id_novel = %s',
           [novel_id]
         )
         res = cur.fetchall()
-    return res
-
-
-  def get_review_info_by_novel_id_user_id(self, novel_id, user_id):
-    with self.conn:
-      with self.conn.cursor() as cur:
-        cur.execute(
-          'SELECT * FROM "review" WHERE (id_novel = %s AND id_user = %s)',
-          [novel_id, user_id]
-        )
-        res = cur.fetchone()
     return res
 
 
@@ -205,4 +195,28 @@ class DB:
         cur.execute(
           'INSERT INTO "review" (rating, text, id_novel, id_user) VALUES (%s, %s, %s, %s)',
           [rating, text, novel_id, user_id]
+        )
+
+
+  def update_review(self, user_id, novel_id, rating=None, text=None):
+    with self.conn:
+      with self.conn.cursor() as cur:
+        if rating is not None:
+          cur.execute(
+            'UPDATE "review" SET rating = %s WHERE (id_user = %s AND id_novel = %s)',
+            [rating, user_id, novel_id]
+          )
+        if text is not None:
+          cur.execute(
+            'UPDATE "review" SET text = %s WHERE (id_user = %s AND id_novel = %s)',
+            [text, user_id, novel_id]
+          )
+
+
+  def delete_review(self, user_id, novel_id):
+    with self.conn:
+      with self.conn.cursor() as cur:
+        cur.execute(
+          'DELETE FROM "review" WHERE (id_user = %s AND id_novel = %s)',
+          [user_id, novel_id]
         )
