@@ -14,7 +14,7 @@
   <ul>
     {% for chapter in chapters %}
     <li class="content-box">
-      <a href={{ url_for('chapter', novel_id=novel['id'], chapter_num=chapter['order_num']) }}>Chapter{{ chapter['order_num'] }}</a>
+      <a href={{ url_for('chapter', novel_id=novel['id'], chapter_num=chapter['order_num']) }}>Chapter {{ chapter['order_num'] }}</a>
     </li>
     {% endfor %}
   </ul>
