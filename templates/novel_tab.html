@@ -1,0 +1,90 @@
+<div class="content-box">
+  <p>Author: {{ novel['author'] }}</p>
+  <span>Genres: {{ genres | join(', ', attribute='genre') }}</span>
+  <p>Description:</p>
+  <p>{{ novel['description'] }}</p>
+  <p class="content-right">Rating: {{ novel['rating'] }}</p>
+  <p class="content-right">Votes: {{ novel['votes'] }}</p>
+</div>
+
+<section>
+  <header>
+    <h3 class="subheader">Chapter Index</h3>
+  </header>
+  <ul>
+    {% for chapter in chapters %}
+    <li class="content-box">
+      <a href={{ url_for('chapter', novel_id=novel['id'], chapter_num=chapter['order_num']) }}>Chapter{{ chapter['order_num'] }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<hr/>
+
+{% if 'user_id' in session %}
+  <section>
+    {% if my_review is none %}
+      <header>
+        <h3 class="subheader">Leave a Review</h3>
+      </header>
+      <form class="content-box" method="POST">
+        <label for="name">Vote:</label><br>
+        {% for i in range(5) %}
+          <input type="radio" id={{ i }} name="rating" value={{ i + 1 }} required>
+          <label for={{ i }}>{{ i + 1 }}</label>
+        {% endfor %}
+        <br>
+        <label for="review">Write a Review (optional):</label><br>
+        <textarea type="text" id="review" name="review" rows="10"></textarea><br>
+        <button class="button" type="submit" name="add">Post Review</button><br>
+      </form>
+    {% else %}
+      <div id="show-review">
+        <header>
+          <h3 class="subheader">My Review</h3>
+        </header>
+        <div class="content-box">
+          <p>Vote: {{ my_review['rating'] }}</p>
+          <p>Review:</p>
+          <p>{{ my_review['text'] }}</p>
+          <button class="button" type="button" onclick='replace_block("show-review", "edit-review")'>Edit</button>
+          <button class="button" type="button" onclick='send_text({{ url_for('novel', novel_id=novel['id']) | tojson }}, "delete")'>Delete</button><br>
+        </div>
+      </div>
+      <div id="edit-review" class="hide">
+        <header>
+          <h3 class="subheader">Edit Review</h3>
+        </header>
+        <form class="content-box" method="POST">
+          <label for="name">Vote:</label><br>
+          {% for i in range(5) %}
+            <input type="radio" id={{ i }} name="rating" value={{ i + 1 }} required
+            {% if my_review['rating'] == i + 1 %} checked="checked" {% endif %}>
+            <label for={{ i }}>{{ i + 1 }}</label>
+          {% endfor %}
+          <br>
+          <label for="review">Write a Review (optional):</label><br>
+          <textarea type="text" id="review" name="review" rows="10">{{ my_review['text'] }}</textarea><br>
+          <button class="button" type="submit" name="update">Save Review</button><br>
+        </form>
+      </div>
+    {% endif %}
+  </section>
+{% endif %}
+
+<section>
+  <header>
+    <h3 class="subheader">Reviews</h3>
+  </header>
+  <ul>
+    {% for row in reviews %}
+    <li class="content-box">
+      <p>Username: {{ row['username'] }}</p>
+      <p>Vote: {{ row['rating'] }}</p>
+      <p>Review:</p>
+      <p>{{ row['text'] }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+</section>

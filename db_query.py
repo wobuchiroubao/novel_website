@@ -151,7 +151,8 @@ class DB:
     with self.conn:
       with self.conn.cursor() as cur:
         cur.execute(
-          'SELECT "novel".id, name, description, rating, votes, "user".nickname AS author FROM "novel" \
+          'SELECT "novel".id, name, description, rating, votes, \
+          "user".id AS author_id, "user".nickname AS author FROM "novel" \
           JOIN "user" ON "novel".id_user = "user".id WHERE "novel".id = %s',
           [id]
         )
@@ -172,6 +173,50 @@ class DB:
             'INSERT INTO "genre_aux" (id_genre, id_novel) VALUES (%s, %s)',
             [genre_id, novel_id]
           )
+
+
+# ---------------------chapter---------------------
+
+  def get_chapters_info_by_novel_id(self, novel_id):
+    with self.conn:
+      with self.conn.cursor() as cur:
+        cur.execute(
+          'SELECT * FROM "chapter" WHERE id_novel = %s ORDER BY order_num',
+          [novel_id]
+        )
+        res = cur.fetchall()
+    return res
+
+
+  def get_chapters_count_by_novel_id(self, novel_id):
+    with self.conn:
+      with self.conn.cursor() as cur:
+        cur.execute(
+          'SELECT COUNT(1) FROM "chapter" WHERE id_novel = %s',
+          [novel_id]
+        )
+        res = cur.fetchone()
+    return res
+
+
+  def get_chapter_info_by_novel_id_chapter_num(self, novel_id, chapter_num):
+    with self.conn:
+      with self.conn.cursor() as cur:
+        cur.execute(
+          'SELECT * FROM "chapter" WHERE id_novel = %s AND order_num = %s',
+          [novel_id, chapter_num]
+        )
+        res = cur.fetchone()
+    return res
+
+
+  def add_chapter(self, chapter_num, novel_id, description):
+    with self.conn:
+      with self.conn.cursor() as cur:
+        cur.execute(
+          'INSERT INTO "chapter" (order_num, text, id_novel) VALUES (%s, %s, %s)',
+          [chapter_num, description, novel_id]
+        )
 
 
 # ---------------------review---------------------

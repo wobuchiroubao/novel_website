@@ -52,6 +52,15 @@ textarea {
   resize: none;
 }
 
+hr {
+  margin: 200px auto 0;
+  width: 96vw;
+  height: 3px;
+  border: 0;
+  border-style: none;
+  background-color: var(--brown);
+}
+
 .background {
   background-color: var(--ochre);
   background-image: url('/static/partridge.webp');

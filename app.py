@@ -29,7 +29,13 @@ def main_page():
 def novel(novel_id):
   dbQuery = db_query.DB(app.config)
   if request.method == 'POST':
-    if request.data == b'delete':
+    if 'add_chapter' in request.form:
+      dbQuery.add_chapter(
+        chapter_num=(dbQuery.get_chapters_count_by_novel_id(novel_id)['count'] + 1),
+        novel_id=novel_id,
+        description=request.form['description']
+      ) 
+    elif request.data == b'delete':
       dbQuery.delete_review(
         user_id=session['user_id'],
         novel_id=novel_id
@@ -68,8 +74,19 @@ def novel(novel_id):
     'novel.html',
     novel=dbQuery.get_novel_info_by_novel_id(novel_id),
     genres=dbQuery.get_genres_info_by_novel_id(novel_id),
+    chapters=dbQuery.get_chapters_info_by_novel_id(novel_id),
     my_review=my_review,
     reviews=reviews
+  )
+
+
+@app.route('/novel/<int:novel_id>/chapter/<int:chapter_num>', methods=['GET'])
+def chapter(novel_id, chapter_num):
+  dbQuery = db_query.DB(app.config)
+  return render_template(
+    'chapter.html',
+    novel=dbQuery.get_novel_info_by_novel_id(novel_id),
+    chapter=dbQuery.get_chapter_info_by_novel_id_chapter_num(novel_id, chapter_num),
   )
 
 
