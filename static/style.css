@@ -154,7 +154,7 @@ a:hover, input:hover {
   flex-wrap: wrap;
 }
 
-.tabs-box input[type="radio"] {
+.tabs-box input[name="tab"] {
   display: none;
 }
 
@@ -169,11 +169,11 @@ a:hover, input:hover {
   
 }
 
-.tabs-box input[type="radio"]:checked + label {
+.tabs-box input[name="tab"]:checked + label {
   color: var(--red);
 }
 
-.tabs-box input[type="radio"]:checked + label + .tab {
+.tabs-box input[name="tab"]:checked + label + .tab {
   display: block;
 }
 
