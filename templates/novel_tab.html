@@ -1,6 +1,6 @@
 <div class="content-box">
   <p>Author: {{ novel['author'] }}</p>
-  <span>Genres: {{ genres | join(', ', attribute='genre') }}</span>
+  <p>Genres: {{ genres | join(', ', attribute='genre') }}</p>
   <p>Description:</p>
   <p>{{ novel['description'] }}</p>
   <p class="content-right">Rating: {{ novel['rating'] }}</p>

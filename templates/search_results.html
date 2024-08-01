@@ -14,7 +14,7 @@
     <li class="content-box">
       <a class="big-link" href={{ url_for('novel', novel_id=row[0]['id']) }}>{{ row[0]['name'] }}</a>
       <p>Author: {{ row[0]['author'] }}</p>
-      <span>Genres: {{ row[1] | join(', ', attribute='genre') }}</span>
+      <p>Genres: {{ row[1] | join(', ', attribute='genre') }}</p>
       <p>Description:</p>
       <p>{{ row[0]['description'] }}</p>
       <p class="content-right">Rating: {{ row[0]['rating'] }}</p>
