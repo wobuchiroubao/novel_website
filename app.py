@@ -62,6 +62,7 @@ def novel(novel_id):
       )
     else:
       abort(400)
+    return redirect(url_for('novel', novel_id=novel_id))
   reviews=dbQuery.get_reviews_info_by_novel_id(novel_id)
   my_review_idx = None
   if 'user_id' in session:
@@ -194,6 +195,7 @@ def user_profile():
       )
     except db.errors.DatabaseError:
       abort(400)
+    return redirect(url_for('user_profile'))
   nickname = dbQuery.get_user_info_by_user_id(id=session['user_id'])['nickname']
   novels = dbQuery.get_novels_by_author_id(session['user_id'])
   data = []
