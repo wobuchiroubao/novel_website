@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 
-{% block subheader %}
-  <h2 class="subheader">
-    {% block title %}
-      Account Settings ({{ nickname }})
-    {% endblock %}
-  </h2>
-{% endblock %}
 
 {% block body %}
+  <header>
+    <h2 class="subheader">
+      {% block title %}
+        Account Settings ({{ nickname }})
+      {% endblock %}
+    </h2>
+  </header>
+
   <form class="content-box" method="POST">
     <div>Change User Name:</div>
     <input type="text" id="login" name="new_login" required><br>

@@ -1,22 +1,22 @@
 {% extends 'base.html' %}
 
-{% block subheader %}
-  <h2 class="subheader">
-    {% block title %}
-      {% if 'user_id' in session and session.get('user_rights') == 'admin_' %}
-        Register Administrator
-      {% else %}
-        Register
-      {% endif %}
-    {% endblock %}
-  </h2>
-{% endblock %}
-
 {% block head %}
   <script src="{{ url_for('static', filename='form_submit_error_handling.js') }}"></script>
 {% endblock %}
 
 {% block body %}
+  <header>
+    <h2 class="subheader">
+      {% block title %}
+        {% if 'user_id' in session and session.get('user_rights') == 'admin_' %}
+          Register Administrator
+        {% else %}
+          Register
+        {% endif %}
+      {% endblock %}
+    </h2>
+  </header>
+
   <form class="content-box" method="POST" id="reg_form" onsubmit='handle_form_submit_errors(event, {{ url_for('register') | tojson }}, "error")'>
     <label for="nickname">User Name:</label><br>
     <input type="text" id="nickname" name="nickname" required><br>

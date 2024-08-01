@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 
-{% block subheader %}
-  <h2 class="subheader">
-    {% block title %}
-      Administration Settings
-    {% endblock %}
-  </h2>
-{% endblock %}
-
 {% block head %}
   <script src="{{ url_for('static', filename='administration_settings.js') }}"></script>
   <script src="{{ url_for('static', filename='form_submit_error_handling.js') }}"></script>
 {% endblock %}
 
 {% block body %}
+  <header>
+    <h2 class="subheader">
+      {% block title %}
+        Administration Settings
+      {% endblock %}
+    </h2>
+  </header>
+
   <div class="content-box">
     <a href={{ url_for('register') }}>Register new administrator</a><br>
     <form method="POST" onsubmit='handle_edit_genre(event, "edit_genre")'>

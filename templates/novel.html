@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
 
-{% block subheader %}
-  <h2 class="subheader">
-    {% block title %}
-      {{ novel['name'] }}
-    {% endblock %}
-  </h2>
-{% endblock %}
-
 {% block head %}
   <script src="{{ url_for('static', filename='common.js') }}"></script>
 {% endblock %}
 
 {% block body %}
+  <header>
+    <h2 class="subheader">
+      {% block title %}
+        {{ novel['name'] }}
+      {% endblock %}
+    </h2>
+  </header>
+
   <div class="content-box">
     <p>Author: {{ novel['author'] }}</p>
     <span>Genres: {{ genres | join(', ', attribute='genre') }}</span>

@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
-{% block subheader %}
-  <h2 class="subheader">
-    {% block title %}
-      Search Results
-    {% endblock %}
-  </h2>
-{% endblock %}
-
 {% block body %}
+  <header>
+    <h2 class="subheader">
+      {% block title %}
+        Search Results
+      {% endblock %}
+    </h2>
+  </header>
+
   <ul>
     {% for row in data %}
     <li class="content-box">
