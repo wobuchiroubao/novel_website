@@ -15,12 +15,15 @@ function send_text(url, text) {
     },
     body: text.toString(),
   }).then(res => {
-      if (!res.ok) {
-        throw new Error(`HTTP error: ${res.status}`);
-      }
-      location.href = url;
-    })
-    .catch((err) => console.error(`Failed request: ${err.message}`));
+    if (!res.ok) {
+      throw new Error(`HTTP error: ${res.status}`);
+    }
+    return res.json();
+  })
+  .then(res => {
+    location.href = res.url;
+  })
+  .catch((err) => console.error(`Failed request: ${err.message}`));
 }
 
 

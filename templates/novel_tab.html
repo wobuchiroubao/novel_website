@@ -28,7 +28,7 @@
       <header>
         <h3 class="subheader">Leave a Review</h3>
       </header>
-      <form class="content-box" method="POST">
+      <form class="content-box" action={{ url_for('post_review', novel_id=novel['id']) }} method="POST">
         <label for="name">Vote:</label><br>
         {% for i in range(5) %}
           <input type="radio" id={{ i }} name="rating" value={{ i + 1 }} required>
@@ -37,7 +37,7 @@
         <br>
         <label for="review">Write a Review (optional):</label><br>
         <textarea type="text" id="review" name="review" rows="10"></textarea><br>
-        <button class="button" type="submit" name="add">Post Review</button><br>
+        <button class="button" type="submit">Post Review</button><br>
       </form>
     {% else %}
       <div id="show-review">
@@ -49,14 +49,14 @@
           <p><b>Review:</b></p>
           <p>{{ my_review['text'] }}</p>
           <button class="button" type="button" onclick='replace_block("show-review", "edit-review")'>Edit</button>
-          <button class="button" type="button" onclick='send_text({{ url_for('novel', novel_id=novel['id']) | tojson }}, "delete")'>Delete</button><br>
+          <button class="button" type="button" onclick='send_text({{ url_for('delete_review', novel_id=novel['id']) | tojson }}, "delete")'>Delete</button><br>
         </div>
       </div>
       <div id="edit-review" class="hide">
         <header>
           <h3 class="subheader">Edit Review</h3>
         </header>
-        <form class="content-box" method="POST">
+        <form class="content-box" action={{ url_for('edit_review', novel_id=novel['id']) }} method="POST">
           <label for="name"><b>Vote:</b></label><br>
           {% for i in range(5) %}
             <input type="radio" id={{ i }} name="rating" value={{ i + 1 }} required
@@ -66,7 +66,7 @@
           <br>
           <label for="review"><b>Write a Review (optional):</b></label><br>
           <textarea type="text" id="review" name="review" rows="10">{{ my_review['text'] }}</textarea><br>
-          <button class="button" type="submit" name="update">Save Review</button><br>
+          <button class="button" type="submit">Save Review</button><br>
         </form>
       </div>
     {% endif %}

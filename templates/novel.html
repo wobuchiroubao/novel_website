@@ -20,10 +20,10 @@
       <input type="radio" id="publish_chapter" name="tab">
       <label for="publish_chapter" class="subheader">Publish Chapter</label>
       <div id="publish_chapter" class="tab">
-        <form class="content-box" method="POST">
+        <form class="content-box" action={{ url_for('publish_chapter', novel_id=novel['id']) }} method="POST">
           <label for="descr"><b>Chapter {{ chapters | length + 1 }}:</b></label><br>
           <textarea type="text" id="descr" name="description" rows="20" required></textarea><br>
-          <button class="button" type="submit" name="add_chapter">Publish</button><br>
+          <button class="button" type="submit">Publish</button><br>
         </form>
       </div>
     </div>

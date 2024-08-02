@@ -25,44 +25,9 @@ def main_page():
   return render_template('main_page.html')
 
 
-@app.route('/novel/<int:novel_id>', methods=['GET', 'POST'])
+@app.route('/novel/<int:novel_id>', methods=['GET'])
 def novel(novel_id):
   dbQuery = db_query.DB(app.config)
-  if request.method == 'POST':
-    if 'add_chapter' in request.form:
-      dbQuery.add_chapter(
-        chapter_num=(dbQuery.get_chapters_count_by_novel_id(novel_id)['count'] + 1),
-        novel_id=novel_id,
-        description=request.form['description']
-      ) 
-    elif request.data == b'delete':
-      dbQuery.delete_review(
-        user_id=session['user_id'],
-        novel_id=novel_id
-      )
-    elif 'add' in request.form:
-      try:
-        dbQuery.add_review(
-          user_id=session['user_id'],
-          novel_id=novel_id,
-          rating=request.form['rating'],
-          text=request.form.get('review')
-        )
-      except db.errors.UniqueViolation:
-        return jsonify(
-          url=None,
-          err='You\'ve already left a review.'
-        )
-    elif 'update' in request.form:
-      dbQuery.update_review(
-        user_id=session['user_id'],
-        novel_id=novel_id,
-        rating=request.form['rating'],
-        text=request.form.get('review')
-      )
-    else:
-      abort(400)
-    return redirect(url_for('novel', novel_id=novel_id))
   reviews=dbQuery.get_reviews_info_by_novel_id(novel_id)
   my_review_idx = None
   if 'user_id' in session:
@@ -79,6 +44,60 @@ def novel(novel_id):
     my_review=my_review,
     reviews=reviews
   )
+
+
+@app.route('/novel/<int:novel_id>/publish_chapter', methods=['POST'])
+def publish_chapter(novel_id):
+  dbQuery = db_query.DB(app.config)
+  dbQuery.add_chapter(
+    chapter_num=(dbQuery.get_chapters_count_by_novel_id(novel_id)['count'] + 1),
+    novel_id=novel_id,
+    description=request.form['description']
+  )
+  return redirect(url_for('novel', novel_id=novel_id))
+
+
+@app.route('/novel/<int:novel_id>/post_review', methods=['POST'])
+def post_review(novel_id):
+  dbQuery = db_query.DB(app.config)
+  try:
+    dbQuery.add_review(
+      user_id=session['user_id'],
+      novel_id=novel_id,
+      rating=request.form['rating'],
+      text=request.form.get('review')
+    )
+  except db.errors.UniqueViolation:
+    return jsonify(
+      url=None,
+      err='You\'ve already left a review.'
+    )
+  return redirect(url_for('novel', novel_id=novel_id))
+
+
+@app.route('/novel/<int:novel_id>/edit_review', methods=['POST'])
+def edit_review(novel_id):
+  dbQuery = db_query.DB(app.config)
+  dbQuery.update_review(
+    user_id=session['user_id'],
+    novel_id=novel_id,
+    rating=request.form['rating'],
+    text=request.form.get('review')
+  )
+  return redirect(url_for('novel', novel_id=novel_id))
+
+
+@app.route('/novel/<int:novel_id>/delete_review', methods=['POST'])
+def delete_review(novel_id):
+  dbQuery = db_query.DB(app.config)
+  if request.data == b'delete':
+    dbQuery.delete_review(
+      user_id=session['user_id'],
+      novel_id=novel_id
+    )
+  else:
+    abort(400)
+  return jsonify(url=url_for('novel', novel_id=novel_id))
 
 
 @app.route('/novel/<int:novel_id>/chapter/<int:chapter_num>', methods=['GET'])
