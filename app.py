@@ -84,10 +84,13 @@ def novel(novel_id):
 @app.route('/novel/<int:novel_id>/chapter/<int:chapter_num>', methods=['GET'])
 def chapter(novel_id, chapter_num):
   dbQuery = db_query.DB(app.config)
+  chapter = dbQuery.get_chapter_info_by_novel_id_chapter_num(novel_id, chapter_num)
+  if chapter is None:
+    return abort(404)
   return render_template(
     'chapter.html',
     novel=dbQuery.get_novel_info_by_novel_id(novel_id),
-    chapter=dbQuery.get_chapter_info_by_novel_id_chapter_num(novel_id, chapter_num),
+    chapter=chapter,
     chapters_count=dbQuery.get_chapters_count_by_novel_id(novel_id)['count']
   )
 
