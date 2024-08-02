@@ -91,6 +91,11 @@ hr {
   font-weight: bold;
 }
 
+.subheader-link {
+  color: var(--brown);
+  text-decoration: none;
+}
+
 .big-link {
   color: var(--blue);
   font-size: 24px;

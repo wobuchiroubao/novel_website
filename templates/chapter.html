@@ -8,7 +8,7 @@
   <header>
     <h2 class="subheader">
       {% block title %}
-        {{ novel['name'] }} — Chapter {{chapter['order_num']}}
+        <a class="subheader-link" href={{ url_for('novel', novel_id=novel['id']) }}>{{ novel['name'] }}</a> — Chapter {{chapter['order_num']}}
       {% endblock %}
     </h2>
   </header>
