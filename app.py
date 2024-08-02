@@ -178,6 +178,7 @@ def account_settings():
       password=password,
       e_mail=request.form.get('new_e_mail')
     )
+    return redirect(url_for('account_settings'))
   nickname = dbQuery.get_user_info_by_user_id(id=session['user_id'])['nickname']
   return render_template('account_settings.html', nickname=nickname)
 
