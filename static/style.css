@@ -91,12 +91,6 @@ hr {
   font-weight: bold;
 }
 
-.big-text {
-  color: var(--brown);
-  font-size: 24px;
-  font-weight: bold;
-}
-
 .big-link {
   color: var(--blue);
   font-size: 24px;
