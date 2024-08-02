@@ -126,6 +126,10 @@ a.settings {
   cursor: pointer;
 }
 
+.button:disabled {
+  cursor: default;
+}
+
 a.search {
   padding-right: 20px;
   color: var(--powder-white);
@@ -143,6 +147,10 @@ a:hover, input:hover {
   border-radius: 6px;
   box-shadow: 2px 3px 2px var(--shadow);
   list-style-type: none;
+}
+
+.content-center {
+  text-align: center;
 }
 
 .content-right {

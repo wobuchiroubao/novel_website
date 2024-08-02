@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block head %}
+  <script src="{{ url_for('static', filename='common.js') }}"></script>
+{% endblock %}
+
 {% block body %}
   <header>
     <h2 class="subheader">
@@ -11,5 +15,10 @@
 
   <div class="content-box">
     <p>{{ chapter['text'] }}</p>
+    <div class="content-center">
+      <button class="button" type="button" onclick='redirect({{ url_for("chapter", novel_id=novel["id"], chapter_num=(chapter["order_num"] - 1)) | tojson }})' {% if chapter['order_num'] == 1 %} disabled {% endif %}>&lt; Prev</button>
+
+      <button class="button" type="button" onclick='redirect({{ url_for("chapter", novel_id=novel["id"], chapter_num=(chapter["order_num"] + 1)) | tojson }})' {% if chapter['order_num'] == chapters_count %} disabled {% endif %}>Next &gt;</button>
+    </div>
   </div>
 {% endblock %}

@@ -22,3 +22,8 @@ function send_text(url, text) {
     })
     .catch((err) => console.error(`Failed request: ${err.message}`));
 }
+
+
+function redirect(url) {
+  location.href = url;
+}
