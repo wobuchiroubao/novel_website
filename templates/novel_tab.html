@@ -1,10 +1,10 @@
 <div class="content-box">
-  <p>Author: {{ novel['author'] }}</p>
-  <p>Genres: {{ genres | join(', ', attribute='genre') }}</p>
-  <p>Description:</p>
+  <p><b>Author: </b>{{ novel['author'] }}</p>
+  <p><b>Genres: </b>{{ genres | join(', ', attribute='genre') }}</p>
+  <p><b>Description:</b></p>
   <p>{{ novel['description'] }}</p>
-  <p class="content-right">Rating: {{ novel['rating'] }}</p>
-  <p class="content-right">Votes: {{ novel['votes'] }}</p>
+  <p class="content-right"><b>Rating: </b>{{ novel['rating'] }}</p>
+  <p class="content-right"><b>Votes: </b>{{ novel['votes'] }}</p>
 </div>
 
 <section>
@@ -45,8 +45,8 @@
           <h3 class="subheader">My Review</h3>
         </header>
         <div class="content-box">
-          <p>Vote: {{ my_review['rating'] }}</p>
-          <p>Review:</p>
+          <p><b>Vote: </b>{{ my_review['rating'] }}</p>
+          <p><b>Review:</b></p>
           <p>{{ my_review['text'] }}</p>
           <button class="button" type="button" onclick='replace_block("show-review", "edit-review")'>Edit</button>
           <button class="button" type="button" onclick='send_text({{ url_for('novel', novel_id=novel['id']) | tojson }}, "delete")'>Delete</button><br>
@@ -57,14 +57,14 @@
           <h3 class="subheader">Edit Review</h3>
         </header>
         <form class="content-box" method="POST">
-          <label for="name">Vote:</label><br>
+          <label for="name"><b>Vote:</b></label><br>
           {% for i in range(5) %}
             <input type="radio" id={{ i }} name="rating" value={{ i + 1 }} required
             {% if my_review['rating'] == i + 1 %} checked="checked" {% endif %}>
             <label for={{ i }}>{{ i + 1 }}</label>
           {% endfor %}
           <br>
-          <label for="review">Write a Review (optional):</label><br>
+          <label for="review"><b>Write a Review (optional):</b></label><br>
           <textarea type="text" id="review" name="review" rows="10">{{ my_review['text'] }}</textarea><br>
           <button class="button" type="submit" name="update">Save Review</button><br>
         </form>
@@ -80,9 +80,9 @@
   <ul>
     {% for row in reviews %}
     <li class="content-box">
-      <p>Username: {{ row['username'] }}</p>
-      <p>Vote: {{ row['rating'] }}</p>
-      <p>Review:</p>
+      <p><b>Username: </b>{{ row['username'] }}</p>
+      <p><b>Vote: </b>{{ row['rating'] }}</p>
+      <p><b>Review:</b></p>
       <p>{{ row['text'] }}</p>
     </li>
     {% endfor %}

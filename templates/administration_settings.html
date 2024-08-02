@@ -17,7 +17,7 @@
   <div class="content-box">
     <a href={{ url_for('register') }}>Register new administrator</a><br>
     <form method="POST" onsubmit='handle_edit_genre(event, "edit_genre")'>
-      <div>Manage Genres</div>
+      <p><b>Manage Genres:</b></p>
       {% for rec in genres %}
         <input type="radio" id={{ rec['id'] }} name="genre" value={{ rec['id'] }} required>
         <label for={{ rec['id'] }}>{{ rec['genre'] }}</label><br>
@@ -26,7 +26,7 @@
       <button class="button" type="submit" name="action" value="delete">Delete</button><br>
     </form>
     <form method="POST" onsubmit='handle_form_submit_errors(event, {{ url_for('administration_settings') | tojson }}, "error")'>
-      <label for="add_genre">Add Genre</label><br>
+      <label for="add_genre"><b>Add Genre:</b></label><br>
       <input type="text" id="add_genre" name="add_genre" required><br>
       <div id="error" class="hide"></div>
       <button class="button" type="submit">Save</button><br>

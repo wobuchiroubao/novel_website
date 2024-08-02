@@ -12,10 +12,10 @@
       {% for row in data %}
       <li class="content-box">
         <a class="big-link" href={{ url_for('novel', novel_id=row[0]['id']) }}>{{ row[0]['name'] }}</a>
-        <p>Genres: {{ row[1] | join(', ', attribute='genre') }}</p>
-        <p>Description:</p>
+        <p><b>Genres: </b>{{ row[1] | join(', ', attribute='genre') }}</p>
+        <p><b>Description:</b></p>
         <p>{{ row[0]['description'] }}</p>
-        <p class="content-right">Rating: {{ row[0]['rating'] }}</p>
+        <p class="content-right"><b>Rating: </b>{{ row[0]['rating'] }}</p>
       </li>
       {% endfor %}
     </ul>
@@ -24,11 +24,11 @@
     <label for="publish_novel" class="subheader">Publish Novel</label>
     <div id="publish_novel" class="tab">
       <form class="content-box" method="POST">
-        <label for="name">Name:</label><br>
+        <label for="name"><b>Name:</b></label><br>
         <input type="text" id="name" name="name" required><br>
-        <label for="descr">Description:</label><br>
+        <label for="descr"><b>Description:</b></label><br>
         <textarea type="text" id="descr" name="description" rows="10" required></textarea><br>
-        <div>Genres:</div>
+        <div><b>Genres:</b></div>
         {% for rec in genres %}
           <input type="checkbox" id={{ rec['id'] }} name="genre" value={{ rec['id'] }}>
           <label for={{ rec['id'] }}>{{ rec['genre'] }}</label><br>

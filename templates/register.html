@@ -18,13 +18,13 @@
   </header>
 
   <form class="content-box" method="POST" id="reg_form" onsubmit='handle_form_submit_errors(event, {{ url_for('register') | tojson }}, "error")'>
-    <label for="nickname">User Name:</label><br>
+    <label for="nickname"><b>User Name:</b></label><br>
     <input type="text" id="nickname" name="nickname" required><br>
-    <label for="passwd">Password:</label><br>
+    <label for="passwd"><b>Password:</b></label><br>
     <input type="text" id="passwd" name="password" required><br>
-    <label for="passwd_rep">Confirm Password:</label><br>
+    <label for="passwd_rep"><b>Confirm Password:</b></label><br>
     <input type="text" id="passwd_rep" name="password_rep" required><br>
-    <label for="e_mail">E-mail:</label><br>
+    <label for="e_mail"><b>E-mail:</b></label><br>
     <input type="text" id="e_mail" name="e_mail" required><br>
     <div id="error" class="hide"></div>
     <button class="button" type="submit">Register</button><br>

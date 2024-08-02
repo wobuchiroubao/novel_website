@@ -10,7 +10,7 @@
   </header>
 
   <form class="content-box" action={{ url_for('search_results') }} method="POST">
-    <label for="chapters_min_max">Chapters[</label>
+    <label for="chapters_min_max"><b>Chapters </b>[</label>
     <select id="chapters_min_max" name="chapters_min_max">
       <option value="min">min</option>
       <option value="max">max</option>
@@ -18,7 +18,7 @@
     <label for="chapters_min_max">]</label>
     <input type="text" name="chapters"><br><br>
 
-    <label for="rating_min_max">Rating[</label>
+    <label for="rating_min_max"><b>Rating </b>[</label>
     <select id="rating_min_max" name="rating_min_max">
       <option value="min">min</option>
       <option value="max">max</option>
@@ -26,18 +26,18 @@
     <label for="rating_min_max">]</label>
     <input type="text" name="rating"><br><br>
 
-    <label for="genre_and_or">Genre[</label>
+    <label for="genre_and_or"><b>Genre </b>[</label>
     <select id="genre_and_or" name="genre_and_or">
       <option value="and">and</option>
       <option value="or">or</option>
     </select>
     <label for="genre_and_or">]</label><br>
     {% for rec in genres %}
-      <label for={{ rec }}>{{ rec['genre'] }}:</label>
-      <input type="checkbox" id={{ rec }} name="genre" value={{ rec['genre'] }}><br>
+    <input type="checkbox" id={{ rec }} name="genre" value={{ rec['genre'] }}>
+      <label for={{ rec }}>{{ rec['genre'] }}</label><br>
     {% endfor %}<br>
 
-    <label for="sort_field">Sort results by:</label><br>
+    <label for="sort_field"><b>Sort results by:</b></label><br>
     <select id="sort_field" name="sort_field">
       <option value="rating">rating</option>
       <option value="chapters">chapters</option>

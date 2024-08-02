@@ -11,20 +11,20 @@
   </header>
 
   <form class="content-box" method="POST">
-    <div>Change User Name:</div>
+    <label for="login"><b>Change User Name:</b></label><br>
     <input type="text" id="login" name="new_login" required><br>
-    <button class="button" type="submit">Save</button><br>
+    <button class="button" type="submit">Save</button>
   </form>
   <form class="content-box" method="POST">
-    <div>Change Password:</div>
+    <label for="passwd"><b>Change Password:</b></label><br>
     <input type="text" id="passwd" name="new_password" required><br>
-    <label for="passwd_rep">Repeat Password:</label><br>
+    <label for="passwd_rep"><b>Repeat Password:</b></label><br>
     <input type="text" id="passwd_rep" name="new_password_rep" required><br>
-    <button class="button" type="submit">Save</button><br>
+    <button class="button" type="submit">Save</button>
   </form>
   <form class="content-box" method="POST">
-    <div>Change E_mail:</div>
+    <label for="e_mail"><b>Change E_mail:</b></label><br>
     <input type="text" id="e_mail" name="new_e_mail" required><br>
-    <button class="button" type="submit">Save</button><br>
+    <button class="button" type="submit">Save</button>
   </form>
 {% endblock %}

@@ -14,9 +14,9 @@
   </header>
 
   <form class="content-box" method="POST" id="login_form" onsubmit='handle_form_submit_errors(event, {{ url_for('login') | tojson }}, "error")'>
-    <label for="login">User Name:</label><br>
+    <label for="login"><b>User Name:</b></label><br>
     <input type="text" id="login" name="login" required><br>
-    <label for="passwd">Password:</label><br>
+    <label for="passwd"><b>Password:</b></label><br>
     <input type="text" id="passwd" name="password" required><br>
     <div id="error" class="hide"></div>
     <button class="button" type="submit">Log In</button><br>
