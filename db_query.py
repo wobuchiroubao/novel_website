@@ -41,12 +41,16 @@ class DB:
 
 
   def add_user(self, rights, nickname, password, e_mail):
+    user_id = None
     with self.conn:
       with self.conn.cursor() as cur:
         cur.execute(
-          'INSERT INTO "user" (rights, nickname, password, e_mail) VALUES (%s, %s, %s, %s)',
+          'INSERT INTO "user" (rights, nickname, password, e_mail) \
+          VALUES (%s, %s, %s, %s) RETURNING id',
           [rights, nickname, password, e_mail]
         )
+        user_id, = cur.fetchone()
+    return user_id
 
 
   def update_user(self, id, nickname=None, password=None, e_mail=None):
@@ -161,6 +165,7 @@ class DB:
 
 
   def add_novel(self, name, description, user_id, genres):
+    novel_id = None
     with self.conn:
       with self.conn.cursor() as cur:
         cur.execute(
@@ -173,6 +178,8 @@ class DB:
             'INSERT INTO "genre_aux" (id_genre, id_novel) VALUES (%s, %s)',
             [genre_id, novel_id]
           )
+    return novel_id
+
 
 
 # ---------------------chapter---------------------
