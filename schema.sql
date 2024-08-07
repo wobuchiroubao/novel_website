@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS "favourite";
 DROP TABLE IF EXISTS "review";
 DROP TABLE IF EXISTS "comment";
 DROP TABLE IF EXISTS "chapter";
+DROP INDEX IF EXISTS "novel_fts";
 DROP TABLE IF EXISTS "novel";
 DROP TABLE IF EXISTS "user";
 DROP TYPE IF EXISTS "rights";
@@ -39,6 +40,8 @@ CREATE TABLE "novel" (
     REFERENCES "user" (id) MATCH FULL
     ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE INDEX "novel_fts" ON "novel" USING GIN (to_tsvector('english', name));
 
 CREATE TABLE "chapter" (
 	id serial NOT NULL,

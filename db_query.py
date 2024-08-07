@@ -130,12 +130,18 @@ class DB:
   def get_novels_by_novel_name(self, name):
     with self.conn:
       with self.conn.cursor() as cur:
-        cur.execute(
-          'SELECT id FROM "novel" \
-          WHERE LOWER(name) LIKE \'%%\' || TRIM(both ' ' FROM LOWER(%s)) || \'%%\' \
-          ORDER BY rating DESC, name',
-          [name]
-        )
+        if name:
+          cur.execute(
+            'SELECT id FROM "novel" \
+            WHERE to_tsvector(\'english\', name) @@ plainto_tsquery(%s) \
+            ORDER BY rating DESC, name',
+            [name]
+          )
+        else:
+          cur.execute(
+            'SELECT id FROM "novel" ORDER BY rating DESC, name',
+            [name]
+          )
         res = cur.fetchall()
     return res
 
