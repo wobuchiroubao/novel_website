@@ -1,3 +1,5 @@
+DROP TRIGGER IF EXISTS novel_trigger_on_review ON "review";
+DROP FUNCTION IF EXISTS novel_update_rating_votes;
 DROP TABLE IF EXISTS "genre_aux";
 DROP TABLE IF EXISTS "genre";
 DROP TABLE IF EXISTS "favourite";
@@ -32,7 +34,8 @@ CREATE TABLE "novel" (
 	id serial NOT NULL,
 	name varchar(200) NOT NULL,
 	description text,
-	rating real NOT NULL DEFAULT 0,
+	rating numeric(2, 1) NOT NULL DEFAULT 0,
+	sum_rating integer NOT NULL DEFAULT 0,
 	votes integer NOT NULL DEFAULT 0,
 	id_user integer NOT NULL,
 	CONSTRAINT novel_pk PRIMARY KEY (id),
@@ -116,3 +119,33 @@ CREATE TABLE "genre_aux" (
     REFERENCES "novel" (id) MATCH FULL
     ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE FUNCTION novel_update_rating_votes()
+RETURNS TRIGGER AS $$
+DECLARE
+	novel_id integer;
+	new_sum_rating integer DEFAULT 0;
+	new_votes integer DEFAULT 0;
+BEGIN
+	novel_id = COALESCE(OLD.id_novel, NEW.id_novel);
+	SELECT sum_rating, votes INTO new_sum_rating, new_votes
+		FROM "novel" WHERE "novel".id = novel_id;
+	IF (TG_OP = 'INSERT') THEN
+		new_sum_rating = (new_sum_rating + NEW.rating);
+		new_votes = new_votes + 1;
+	ELSIF (TG_OP = 'UPDATE') THEN
+		new_sum_rating = (new_sum_rating - OLD.rating + NEW.rating);
+	ELSIF (TG_OP = 'DELETE') THEN
+		new_sum_rating = (new_sum_rating - OLD.rating);
+		new_votes = new_votes - 1;
+	END IF;
+	UPDATE "novel" SET rating = (new_sum_rating::numeric(2, 1) / GREATEST(new_votes, 1)),
+		sum_rating = new_sum_rating,  votes = new_votes WHERE "novel".id = novel_id;
+	RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER novel_trigger_on_review
+	AFTER INSERT OR UPDATE OR DELETE ON "review"
+	FOR EACH ROW
+	EXECUTE FUNCTION novel_update_rating_votes();
