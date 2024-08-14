@@ -22,7 +22,7 @@
 
 <hr/>
 
-{% if 'user_id' in session %}
+{% if 'user_id' in session and session['user_id'] != novel['author_id'] %}
   <section>
     {% if my_review is none %}
       <header>

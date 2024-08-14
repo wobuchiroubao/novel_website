@@ -60,6 +60,9 @@ def publish_chapter(novel_id):
 @app.route('/novel/<int:novel_id>/post_review', methods=['POST'])
 def post_review(novel_id):
   dbQuery = db_query.DB(app.config)
+  author_id = dbQuery.get_novel_info_by_novel_id(novel_id)['author_id']
+  if session['user_id'] == author_id:
+    return jsonify(url=None, err='Can\'t leave review here.')
   try:
     dbQuery.add_review(
       user_id=session['user_id'],
