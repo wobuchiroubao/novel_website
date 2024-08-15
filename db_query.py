@@ -79,7 +79,7 @@ class DB:
     with self.conn:
       with self.conn.cursor() as cur:
         cur.execute(
-          'SELECT * FROM "genre" WHERE genre_type = \'genre_\' ORDER BY genre'
+          'SELECT * FROM "genre" ORDER BY genre'
         )
         res = cur.fetchall()
     return res
@@ -103,8 +103,8 @@ class DB:
     with self.conn:
       with self.conn.cursor() as cur:
         cur.execute(
-          'INSERT INTO "genre" (genre, genre_type) VALUES (%s, %s) RETURNING id',
-          [genre, 'genre_']
+          'INSERT INTO "genre" (genre) VALUES (%s) RETURNING id',
+          [genre]
         )
         genre_id, = cur.fetchone()
     return genre_id
