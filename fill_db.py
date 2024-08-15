@@ -13,6 +13,13 @@ cfg = Config(op.dirname(__file__))
 cfg.from_envvar('CONFIG')
 
 
+def find_genre_by_name(genres, name):
+  for genre in genres:
+    if name == genre['genre']:
+      return genre['id']
+  return None
+
+
 if __name__ == '__main__':
   if len(sys.argv) != 2:
     sys.exit()
@@ -49,10 +56,19 @@ if __name__ == '__main__':
         print('Failure while downloading, retrying in 5s:', exc)
         time.sleep(5)
 
+    work_genres_ids = []
+    all_genres = dbQuery.get_genres_info()
+    for tag in work.tags:
+      tag_slice = tag[:60]
+      genre_id = find_genre_by_name(all_genres, tag_slice)
+      if genre_id is None:
+        genre_id = dbQuery.add_genre(tag_slice)
+      work_genres_ids.append(genre_id)
+
     novel_id = dbQuery.add_novel(
       name=work.title,
       description=work.summary,
       user_id=user_id,
-      genres=[],
+      genres=work_genres_ids,
       chapters=[chapter.text for chapter in work.chapters]
     )

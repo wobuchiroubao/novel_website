@@ -99,12 +99,15 @@ class DB:
 
 
   def add_genre(self, genre):
+    genre_id = None
     with self.conn:
       with self.conn.cursor() as cur:
         cur.execute(
-          'INSERT INTO "genre" (genre, genre_type) VALUES (%s, %s)',
+          'INSERT INTO "genre" (genre, genre_type) VALUES (%s, %s) RETURNING id',
           [genre, 'genre_']
         )
+        genre_id, = cur.fetchone()
+    return genre_id
 
 
   def update_genre(self, genre_id, genre):
