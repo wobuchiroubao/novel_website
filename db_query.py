@@ -170,7 +170,7 @@ class DB:
     return res
 
 
-  def add_novel(self, name, description, user_id, genres):
+  def add_novel(self, name, description, user_id, genres=None, chapters=None):
     novel_id = None
     with self.conn:
       with self.conn.cursor() as cur:
@@ -179,13 +179,19 @@ class DB:
           [name, description, user_id]
         )
         novel_id, = cur.fetchone()
-        for genre_id in genres:
-          cur.execute(
-            'INSERT INTO "genre_aux" (id_genre, id_novel) VALUES (%s, %s)',
-            [genre_id, novel_id]
-          )
+        if genres is not None:
+          for genre_id in genres:
+            cur.execute(
+              'INSERT INTO "genre_aux" (id_genre, id_novel) VALUES (%s, %s)',
+              [genre_id, novel_id]
+            )
+        if chapters is not None:
+          for chap_num, chapter in enumerate(chapters):
+            cur.execute(
+              'INSERT INTO "chapter" (order_num, text, id_novel) VALUES (%s, %s, %s)',
+              [(chap_num + 1), chapter, novel_id]
+            )
     return novel_id
-
 
 
 # ---------------------chapter---------------------
