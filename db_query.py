@@ -1,6 +1,6 @@
 import psycopg2 as db
 from psycopg2.extras import DictCursor
-
+import psycopg2.sql as sql
 
 class DB:
   def __init__(self, config):
@@ -133,21 +133,31 @@ class DB:
 
 # ---------------------novel---------------------
 
+  def get_novels(self, sort_field='rating', sort_order='DESC', limit=10):
+    with self.conn:
+      with self.conn.cursor() as cur:
+        cur.execute(
+          sql.SQL(
+            'SELECT id FROM "novel" ORDER BY {sort_field} {sort_order} LIMIT %s'
+          ).format(
+            sort_field=sql.Identifier(sort_field),
+            sort_order=sql.SQL(sort_order)
+          ),
+          [limit]
+        )
+        res = cur.fetchall()
+    return res
+
+
   def get_novels_by_novel_name(self, name):
     with self.conn:
       with self.conn.cursor() as cur:
-        if name:
-          cur.execute(
-            'SELECT id FROM "novel" \
-            WHERE to_tsvector(\'english\', name) @@ plainto_tsquery(%s) \
-            ORDER BY rating DESC, name',
-            [name]
-          )
-        else:
-          cur.execute(
-            'SELECT id FROM "novel" ORDER BY rating DESC, name',
-            [name]
-          )
+        cur.execute(
+          'SELECT id FROM "novel" \
+          WHERE to_tsvector(\'english\', name) @@ plainto_tsquery(%s) \
+          ORDER BY rating DESC',
+          [name]
+        )
         res = cur.fetchall()
     return res
 
@@ -167,7 +177,7 @@ class DB:
     with self.conn:
       with self.conn.cursor() as cur:
         cur.execute(
-          'SELECT "novel".id, name, description, rating, votes, "novel".tstz, \
+          'SELECT "novel".id, name, description, rating, votes, "novel".tstz, "novel".tstz_upd, \
           "user".id AS author_id, "user".nickname AS author FROM "novel" \
           JOIN "user" ON "novel".id_user = "user".id WHERE "novel".id = %s',
           [id]

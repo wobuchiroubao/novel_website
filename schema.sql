@@ -1,5 +1,7 @@
 DROP TRIGGER IF EXISTS novel_trigger_on_review ON "review";
 DROP FUNCTION IF EXISTS novel_update_rating_votes;
+DROP TRIGGER IF EXISTS novel_trigger_on_chapter ON "chapter";
+DROP FUNCTION IF EXISTS novel_update_tstz_upd;
 DROP TABLE IF EXISTS "genre_aux";
 DROP TABLE IF EXISTS "genre";
 DROP TABLE IF EXISTS "favourite";
@@ -35,6 +37,7 @@ CREATE TABLE "novel" (
 	votes integer NOT NULL DEFAULT 0,
 	id_user integer NOT NULL,
 	tstz timestamptz NOT NULL DEFAULT now(),
+	tstz_upd timestamptz NOT NULL DEFAULT now(),
 	CONSTRAINT novel_pk PRIMARY KEY (id),
   CONSTRAINT user_fk FOREIGN KEY (id_user)
     REFERENCES "user" (id) MATCH FULL
@@ -118,6 +121,19 @@ CREATE TABLE "genre_aux" (
     REFERENCES "novel" (id) MATCH FULL
     ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE FUNCTION novel_update_tstz_upd()
+RETURNS TRIGGER AS $$
+BEGIN
+	UPDATE "novel" SET tstz_upd = NEW.tstz WHERE "novel".id = NEW.id_novel;
+	RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER novel_trigger_on_chapter
+	AFTER INSERT ON "chapter"
+	FOR EACH ROW
+	EXECUTE FUNCTION novel_update_tstz_upd();
 
 CREATE FUNCTION novel_update_rating_votes()
 RETURNS TRIGGER AS $$

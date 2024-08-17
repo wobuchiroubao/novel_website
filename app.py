@@ -22,7 +22,15 @@ app.config.from_envvar('CONFIG')
 
 @app.route('/', methods=['GET', 'POST'])
 def main_page():
-  return render_template('main_page.html')
+  dbQuery = db_query.DB(app.config)
+  novels = dbQuery.get_novels('tstz_upd')
+  data = []
+  for novel, in novels:
+    data.append((
+      dbQuery.get_novel_info_by_novel_id(novel),
+      dbQuery.get_genres_info_by_novel_id(novel)
+    ))
+  return render_template('main_page.html', data=data)
 
 
 @app.route('/novel/<int:novel_id>', methods=['GET'])
@@ -122,7 +130,10 @@ def search_results():
   dbQuery = db_query.DB(app.config)
   recs = []
   if 'novel_name' in request.form:
-    recs = dbQuery.get_novels_by_novel_name(request.form['novel_name'])
+    if request.form['novel_name']:
+      recs = dbQuery.get_novels_by_novel_name(request.form['novel_name'])
+    else: # get most popular novels
+      recs = dbQuery.get_novels('rating')
   else:
     pass # TODO: return advanced search
   data = []
