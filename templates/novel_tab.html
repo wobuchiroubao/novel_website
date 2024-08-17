@@ -3,6 +3,7 @@
   <p><b>Genres: </b>{{ genres | join(', ', attribute='genre') }}</p>
   <p><b>Description:</b></p>
   <p>{{ novel['description'] }}</p>
+  <p class="content-right"><b>Published: </b>{{ novel['tstz'].date() }}</p>
   <p class="content-right"><b>Rating: </b>{{ novel['rating'] }}</p>
   <p class="content-right"><b>Votes: </b>{{ novel['votes'] }}</p>
 </div>
@@ -13,8 +14,9 @@
   </header>
   <ul>
     {% for chapter in chapters %}
-    <li class="content-box">
+    <li class="content-box flow-horz">
       <a href={{ url_for('chapter', novel_id=novel['id'], chapter_num=chapter['order_num']) }}>Chapter {{ chapter['order_num'] }}</a>
+      <p class="content-right">{{ chapter['tstz'].date() }}</p>
     </li>
     {% endfor %}
   </ul>
@@ -45,7 +47,10 @@
           <h3 class="subheader">My Review</h3>
         </header>
         <div class="content-box">
-          <p><b>Vote: </b>{{ my_review['rating'] }}</p>
+          <div class="flow-horz">
+            <p><b>Vote: </b>{{ my_review['rating'] }}</p>
+            <p class="content-right">{{ my_review['tstz'].date() }}</p>
+          </div>
           <p><b>Review:</b></p>
           <p>{{ my_review['text'] }}</p>
           <button class="button" type="button" onclick='replace_block("show-review", "edit-review")'>Edit</button>
@@ -80,7 +85,10 @@
   <ul>
     {% for row in reviews %}
     <li class="content-box">
-      <p><b>Username: </b>{{ row['username'] }}</p>
+      <div class="flow-horz">
+        <p><b>Username: </b>{{ row['username'] }}</p>
+        <p class="content-right">{{ row['tstz'].date() }}</p>
+      </div>
       <p><b>Vote: </b>{{ row['rating'] }}</p>
       <p><b>Review:</b></p>
       <p>{{ row['text'] }}</p>

@@ -10,6 +10,9 @@ class DB:
       password=self.config['PASSWORD'], host=self.config['HOST'],
       cursor_factory=DictCursor
     )
+    with self.conn:
+      with self.conn.cursor() as cur:
+        cur.execute("SET TIMEZONE TO 'UTC'")
 
 
   def __del__(self):
@@ -164,7 +167,7 @@ class DB:
     with self.conn:
       with self.conn.cursor() as cur:
         cur.execute(
-          'SELECT "novel".id, name, description, rating, votes, \
+          'SELECT "novel".id, name, description, rating, votes, "novel".tstz, \
           "user".id AS author_id, "user".nickname AS author FROM "novel" \
           JOIN "user" ON "novel".id_user = "user".id WHERE "novel".id = %s',
           [id]
@@ -247,7 +250,7 @@ class DB:
     with self.conn:
       with self.conn.cursor() as cur:
         cur.execute(
-          'SELECT "review".id, rating, text, \
+          'SELECT "review".id, rating, text, "review".tstz, \
           "user".id AS user_id, "user".nickname AS username FROM "review" \
           JOIN "user" ON "review".id_user = "user".id WHERE id_novel = %s',
           [novel_id]

@@ -205,8 +205,9 @@ def account_settings():
       e_mail=request.form.get('new_e_mail')
     )
     return redirect(url_for('account_settings'))
-  nickname = dbQuery.get_user_info_by_user_id(id=session['user_id'])['nickname']
-  return render_template('account_settings.html', nickname=nickname)
+  return render_template(
+    'account_settings.html', user_info=dbQuery.get_user_info_by_user_id(id=session['user_id'])
+  )
 
 
 @app.route('/user_profile', methods=['GET', 'POST'])

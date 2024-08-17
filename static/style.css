@@ -138,6 +138,12 @@ a:hover, input:hover {
   color: var(--red);
 }
 
+.flow-horz {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
 .content-box {
   margin: 10px auto 20px;
   padding: 15px 3vw;

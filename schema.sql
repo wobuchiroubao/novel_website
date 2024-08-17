@@ -19,8 +19,8 @@ CREATE TABLE "user" (
 	rights rights NOT NULL DEFAULT 'user_',
 	nickname varchar(100) NOT NULL,
 	password CHAR(60) NOT NULL,
-	reg_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	e_mail varchar(40) NOT NULL,
+	tstz timestamptz NOT NULL DEFAULT now(),
 	CONSTRAINT user_pk PRIMARY KEY (id),
 	CONSTRAINT user_nickname_uq UNIQUE (nickname),
 	CONSTRAINT user_e_mail_uq UNIQUE (e_mail)
@@ -34,6 +34,7 @@ CREATE TABLE "novel" (
 	sum_rating integer NOT NULL DEFAULT 0,
 	votes integer NOT NULL DEFAULT 0,
 	id_user integer NOT NULL,
+	tstz timestamptz NOT NULL DEFAULT now(),
 	CONSTRAINT novel_pk PRIMARY KEY (id),
   CONSTRAINT user_fk FOREIGN KEY (id_user)
     REFERENCES "user" (id) MATCH FULL
@@ -47,6 +48,7 @@ CREATE TABLE "chapter" (
 	order_num integer NOT NULL,
 	text text NOT NULL,
 	id_novel integer NOT NULL,
+	tstz timestamptz NOT NULL DEFAULT now(),
 	CONSTRAINT chapter_pk PRIMARY KEY (id),
   CONSTRAINT novel_fk FOREIGN KEY (id_novel)
     REFERENCES "novel" (id) MATCH FULL
@@ -60,6 +62,7 @@ CREATE TABLE "comment" (
 	text varchar(1000) NOT NULL,
 	id_chapter integer NOT NULL,
 	id_user integer NOT NULL,
+	tstz timestamptz NOT NULL DEFAULT now(),
 	CONSTRAINT comment_pk PRIMARY KEY (id),
   CONSTRAINT chapter_fk FOREIGN KEY (id_chapter)
     REFERENCES "chapter" (id) MATCH FULL
@@ -75,6 +78,7 @@ CREATE TABLE "review" (
 	text text,
 	id_novel integer NOT NULL,
 	id_user integer NOT NULL,
+	tstz timestamptz NOT NULL DEFAULT now(),
 	CONSTRAINT review_pk PRIMARY KEY (id),
   CONSTRAINT novel_fk FOREIGN KEY (id_novel)
     REFERENCES "novel" (id) MATCH FULL
