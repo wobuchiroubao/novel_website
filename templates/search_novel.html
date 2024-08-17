@@ -33,8 +33,8 @@
     </select>
     <label for="genre_and_or">]</label><br>
     {% for rec in genres %}
-    <input type="checkbox" id={{ rec }} name="genre" value={{ rec['genre'] }}>
-      <label for={{ rec }}>{{ rec['genre'] }}</label><br>
+    <input type="checkbox" id={{ rec }} name="genre" value={{ rec.genre }}>
+      <label for={{ rec }}>{{ rec.genre }}</label><br>
     {% endfor %}<br>
 
     <label for="sort_field"><b>Sort results by:</b></label><br>

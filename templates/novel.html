@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block title %}
-  {{ novel['name'] }}
+  {{ novel.name }}
 {% endblock %}
 
 {% block body %}
-  {% if 'user_id' in session and session['user_id'] == novel['author_id'] %}
+  {% if 'user_id' in session and session.user_id == novel.author_id %}
     <div class="tabs-box">
       <input type="radio" id="novel_descr" name="tab" checked="checked">
-      <label for="novel_descr" class="subheader">{{ novel['name'] }}</label>
+      <label for="novel_descr" class="subheader">{{ novel.name }}</label>
       <div id="novel_descr" class="tab">
         {% include 'novel_tab.html' %}
       </div>
@@ -20,7 +20,7 @@
       <input type="radio" id="publish_chapter" name="tab">
       <label for="publish_chapter" class="subheader">Publish Chapter</label>
       <div id="publish_chapter" class="tab">
-        <form class="content-box" action={{ url_for('publish_chapter', novel_id=novel['id']) }} method="POST">
+        <form class="content-box" action={{ url_for('publish_chapter', novel_id=novel.id) }} method="POST">
           <label for="descr"><b>Chapter {{ chapters | length + 1 }}:</b></label><br>
           <textarea type="text" id="descr" name="description" rows="20" required></textarea><br>
           <button class="button" type="submit">Publish</button><br>
@@ -31,7 +31,7 @@
   {% else %}
     <header>
       <h2 class="subheader">
-        {{ novel['name'] }}
+        {{ novel.name }}
       </h2>
     </header>
     {% include 'novel_tab.html' %}

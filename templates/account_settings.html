@@ -5,7 +5,7 @@
   <header>
     <h2 class="subheader">
       {% block title %}
-        Account Settings ({{ user_info['nickname'] }} | {{ user_info['tstz'].date() }})
+        Account Settings ({{ user_info.nickname }} | {{ user_info.tstz.date() }})
       {% endblock %}
     </h2>
   </header>

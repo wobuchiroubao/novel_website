@@ -8,17 +8,17 @@
   <header>
     <h2 class="subheader">
       {% block title %}
-        <a class="subheader-link" href={{ url_for('novel', novel_id=novel['id']) }}>{{ novel['name'] }}</a> — Chapter {{chapter['order_num']}}
+        <a class="subheader-link" href={{ url_for('novel', novel_id=novel.id) }}>{{ novel.name }}</a> — Chapter {{chapter.order_num}}
       {% endblock %}
     </h2>
   </header>
 
   <div class="content-box">
-    <p>{{ chapter['text'] }}</p>
+    <p>{{ chapter.text }}</p>
     <div class="content-center">
-      <button class="button" type="button" onclick='redirect({{ url_for("chapter", novel_id=novel["id"], chapter_num=(chapter["order_num"] - 1)) | tojson }})' {% if chapter['order_num'] == 1 %} disabled {% endif %}>&lt; Prev</button>
+      <button class="button" type="button" onclick='redirect({{ url_for("chapter", novel_id=novel["id"], chapter_num=(chapter["order_num"] - 1)) | tojson }})' {% if chapter.order_num == 1 %} disabled {% endif %}>&lt; Prev</button>
 
-      <button class="button" type="button" onclick='redirect({{ url_for("chapter", novel_id=novel["id"], chapter_num=(chapter["order_num"] + 1)) | tojson }})' {% if chapter['order_num'] == chapters_count %} disabled {% endif %}>Next &gt;</button>
+      <button class="button" type="button" onclick='redirect({{ url_for("chapter", novel_id=novel["id"], chapter_num=(chapter["order_num"] + 1)) | tojson }})' {% if chapter.order_num == chapters_count %} disabled {% endif %}>Next &gt;</button>
     </div>
   </div>
 {% endblock %}

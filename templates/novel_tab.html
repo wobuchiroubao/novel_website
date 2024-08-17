@@ -1,11 +1,11 @@
 <div class="content-box">
-  <p><b>Author: </b>{{ novel['author'] }}</p>
+  <p><b>Author: </b>{{ novel.author }}</p>
   <p><b>Genres: </b>{{ genres | join(', ', attribute='genre') }}</p>
   <p><b>Description:</b></p>
-  <p>{{ novel['description'] }}</p>
-  <p class="content-right"><b>Published: </b>{{ novel['tstz'].date() }}</p>
-  <p class="content-right"><b>Rating: </b>{{ novel['rating'] }}</p>
-  <p class="content-right"><b>Votes: </b>{{ novel['votes'] }}</p>
+  <p>{{ novel.description }}</p>
+  <p class="content-right"><b>Published: </b>{{ novel.tstz.date() }}</p>
+  <p class="content-right"><b>Rating: </b>{{ novel.rating }}</p>
+  <p class="content-right"><b>Votes: </b>{{ novel.votes }}</p>
 </div>
 
 <section>
@@ -15,8 +15,8 @@
   <ul>
     {% for chapter in chapters %}
     <li class="content-box flow-horz">
-      <a href={{ url_for('chapter', novel_id=novel['id'], chapter_num=chapter['order_num']) }}>Chapter {{ chapter['order_num'] }}</a>
-      <p class="content-right">{{ chapter['tstz'].date() }}</p>
+      <a href={{ url_for('chapter', novel_id=novel.id, chapter_num=chapter.order_num) }}>Chapter {{ chapter.order_num }}</a>
+      <p class="content-right">{{ chapter.tstz.date() }}</p>
     </li>
     {% endfor %}
   </ul>
@@ -24,13 +24,13 @@
 
 <hr/>
 
-{% if 'user_id' in session and session['user_id'] != novel['author_id'] %}
+{% if 'user_id' in session and session.user_id != novel.author_id %}
   <section>
     {% if my_review is none %}
       <header>
         <h3 class="subheader">Leave a Review</h3>
       </header>
-      <form class="content-box" action={{ url_for('post_review', novel_id=novel['id']) }} method="POST">
+      <form class="content-box" action={{ url_for('post_review', novel_id=novel.id) }} method="POST">
         <label for="name">Vote:</label><br>
         {% for i in range(5) %}
           <input type="radio" id={{ i }} name="rating" value={{ i + 1 }} required>
@@ -48,29 +48,29 @@
         </header>
         <div class="content-box">
           <div class="flow-horz">
-            <p><b>Vote: </b>{{ my_review['rating'] }}</p>
-            <p class="content-right">{{ my_review['tstz'].date() }}</p>
+            <p><b>Vote: </b>{{ my_review.rating }}</p>
+            <p class="content-right">{{ my_review.tstz.date() }}</p>
           </div>
           <p><b>Review:</b></p>
-          <p>{{ my_review['text'] }}</p>
+          <p>{{ my_review.text }}</p>
           <button class="button" type="button" onclick='replace_block("show-review", "edit-review")'>Edit</button>
-          <button class="button" type="button" onclick='send_text({{ url_for('delete_review', novel_id=novel['id']) | tojson }}, "delete")'>Delete</button><br>
+          <button class="button" type="button" onclick='send_text({{ url_for('delete_review', novel_id=novel.id) | tojson }}, "delete")'>Delete</button><br>
         </div>
       </div>
       <div id="edit-review" class="hide">
         <header>
           <h3 class="subheader">Edit Review</h3>
         </header>
-        <form class="content-box" action={{ url_for('edit_review', novel_id=novel['id']) }} method="POST">
+        <form class="content-box" action={{ url_for('edit_review', novel_id=novel.id) }} method="POST">
           <label for="name"><b>Vote:</b></label><br>
           {% for i in range(5) %}
             <input type="radio" id={{ i }} name="rating" value={{ i + 1 }} required
-            {% if my_review['rating'] == i + 1 %} checked="checked" {% endif %}>
+            {% if my_review.rating == i + 1 %} checked="checked" {% endif %}>
             <label for={{ i }}>{{ i + 1 }}</label>
           {% endfor %}
           <br>
           <label for="review"><b>Write a Review (optional):</b></label><br>
-          <textarea type="text" id="review" name="review" rows="10">{{ my_review['text'] }}</textarea><br>
+          <textarea type="text" id="review" name="review" rows="10">{{ my_review.text }}</textarea><br>
           <button class="button" type="submit">Save Review</button><br>
         </form>
       </div>
@@ -86,12 +86,12 @@
     {% for row in reviews %}
     <li class="content-box">
       <div class="flow-horz">
-        <p><b>Username: </b>{{ row['username'] }}</p>
-        <p class="content-right">{{ row['tstz'].date() }}</p>
+        <p><b>Username: </b>{{ row.username }}</p>
+        <p class="content-right">{{ row.tstz.date() }}</p>
       </div>
-      <p><b>Vote: </b>{{ row['rating'] }}</p>
+      <p><b>Vote: </b>{{ row.rating }}</p>
       <p><b>Review:</b></p>
-      <p>{{ row['text'] }}</p>
+      <p>{{ row.text }}</p>
     </li>
     {% endfor %}
   </ul>

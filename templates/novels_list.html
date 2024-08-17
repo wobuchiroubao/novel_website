@@ -1,14 +1,14 @@
 <ul>
   {% for novel, genre_list in data %}
   <li class="content-box">
-    <a class="big-link" href={{ url_for('novel', novel_id=novel['id']) }}>{{ novel['name'] }}</a>
-    <p><b>Author: </b>{{ novel['author'] }}</p>
+    <a class="big-link" href={{ url_for('novel', novel_id=novel.id) }}>{{ novel.name }}</a>
+    <p><b>Author: </b>{{ novel.author }}</p>
     <p><b>Genres: </b>{{ genre_list | join(', ', attribute='genre') }}</p>
     <p><b>Description:</b></p>
-    <p>{{ novel['description'] }}</p>
-    <p class="content-right"><b>Published: </b>{{ novel['tstz'].date() }}</p>
-    <p class="content-right"><b>Rating: </b>{{ novel['rating'] }}</p>
-    <p class="content-right"><b>Votes: </b>{{ novel['votes'] }}</p>
+    <p>{{ novel.description }}</p>
+    <p class="content-right"><b>Published: </b>{{ novel.tstz.date() }}</p>
+    <p class="content-right"><b>Rating: </b>{{ novel.rating }}</p>
+    <p class="content-right"><b>Votes: </b>{{ novel.votes }}</p>
   </li>
   {% endfor %}
 </ul>
