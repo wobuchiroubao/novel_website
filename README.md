@@ -1,14 +1,21 @@
 ## Novel website - application for websites containing novels or frankly speaking writings of any sorts
 
 ### Preparing the server
-On a server where the database will be stored (for the current version of installation manual it should be the same with the one where the application is run...) create the postgres database:
+On a server where the database will be stored (for the current version of installation manual it should be the same with the one where the application is run...) create postgres role with the same name as user's UNIX system account:
+```
+> sudo -i -u postgres
+$ createuser rolename
+```
+where `rolename` stands for existing UNIX system account.
+
+Then create the postgres database:
 ```
 $ createdb -O rolename dbname
 $ psql -d dbname
 # ALTER USER rolename WITH PASSWORD 'passwd';
 # quit;
 ```
-where `rolename` stands for existing UNIX system account, `dbname` and `passwd` are kind of self explanatory (something like `novel_website_db` will do for `dbname`)
+where `rolename` is the newly created postgres role, `dbname` and `passwd` are kind of self explanatory (something like `novel_website_db` will do for `dbname`).
 
 ### Building from source
 Create a configuration file `novel_website_config.py` (or choose any other appropriate name) with the contents:
