@@ -43,7 +43,11 @@ You can add other administrators this way later on
 or add them via existing administrators' accounts options.
 
 ### Running
-Just type the following command in the target directory:
+To run in development mode type the following command in the target directory:
 ```
 $ ./app.py
+```
+To run in production mode type:
+```
+$ uwsgi --http-socket 0.0.0.0:8080 --master --processes 4 --plugin python3 --wsgi-file app.py --callable app
 ```
